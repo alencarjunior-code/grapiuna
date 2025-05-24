@@ -1,0 +1,231 @@
+/* Estilos Gerais */
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilos do Cabeçalho (sem alterações) */
+.site-header {
+    background-color: #BD1622;
+    padding: 8px 0;
+    color: white;
+}
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.logo img {
+    height: 22px;
+    vertical-align: middle;
+}
+.contact-info,
+.whatsapp-link,
+.social-icons {
+    font-size: 0.8em;
+}
+.contact-items-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+}
+.contact-item a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: white;
+    transition: opacity 0.3s ease;
+}
+.contact-item a:hover { opacity: 0.8; }
+.contact-item .contact-text { display: inline; }
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+}
+.whatsapp-link {
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: opacity 0.3s ease;
+}
+.whatsapp-link:hover { opacity: 0.8; }
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+}
+.social-icons a {
+    text-decoration: none;
+    display: inline-flex;
+}
+.contact-icon,
+.button-icon,
+.social-icon-svg {
+    height: 1.6em;
+    width: auto;
+    vertical-align: middle;
+}
+.social-icon-svg {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+.social-icons a:hover .social-icon-svg { opacity: 1; }
+
+/* Estilos do Banner Rotativo */
+.banner-section {
+    width: 100%; /* Por padrão, ocupa a largura do pai */
+    position: relative; /* Para posicionar os indicadores */
+    /* overflow: hidden; movido para o mobile onde realmente é necessário para o efeito 120% */
+}
+
+/* O .container dentro de .banner-section limitará a largura do carrossel no desktop */
+.banner-section .container {
+    position: relative; /* Para o .carousel-indicators se posicionar em relação a ele no desktop se desejado, ou ao .banner-section */
+}
+
+.carousel-container {
+    width: 100%; /* Ocupa 100% do .container pai (ou do .banner-section no mobile) */
+    position: relative; /* Para os slides absolutos, se usarmos essa técnica */
+    overflow: hidden; /* Esconde partes dos slides que são maiores */
+}
+
+.carousel-slide {
+    width: 100%;
+    display: none; 
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    /* Para o efeito de "vazamento" da imagem no mobile, não usamos position:absolute aqui,
+       mas sim manipulamos a largura da imagem e seu posicionamento relativo */
+}
+
+.carousel-slide.active {
+    display: block;
+    opacity: 1;
+}
+
+.carousel-slide img {
+    display: block;
+    width: 100%; /* No desktop, 100% do slide (que é 100% do container) */
+    height: auto;
+    max-width: none; /* Garante que não haja limite de largura na imagem */
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 20px; /* Alinhado à esquerda por padrão (do .banner-section ou .container se este for relative) */
+    display: flex;
+    gap: 6px;
+    z-index: 15;
+}
+
+.indicator-item {
+    width: 70px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.35);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 2px;
+}
+
+.indicator-item:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.indicator-item.active {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.carousel-indicators.hidden {
+    display: none !important;
+}
+
+
+/* ----- RESPONSIVIDADE ----- */
+@media (max-width: 992px) { /* Tablet */
+    .header-left { gap: 15px; }
+    .logo img { height: 20px; }
+    .contact-info, .whatsapp-link, .social-icons { font-size: 0.75em; }
+    .contact-items-wrapper, .header-right, .social-icons { gap: 1em; }
+
+    .carousel-indicators {
+        left: 15px; /* Ajuste para tablet */
+        bottom: 15px;
+    }
+    .indicator-item {
+        width: 60px;
+    }
+}
+
+@media (max-width: 768px) { /* Mobile */
+    .site-header { padding: 8px 10px; }
+    .header-flex { align-items: center; gap: 10px; }
+    .header-left { align-items: center; gap: 10px; }
+    .logo img { height: 20px; }
+    .contact-info, .whatsapp-link, .social-icons { font-size: 0.8em; }
+    .contact-icon, .button-icon, .social-icon-svg { height: 1.6em; vertical-align: middle; }
+    .contact-items-wrapper { display: flex; align-items: center; gap: 10px; }
+    .contact-item a .contact-text { display: none; }
+    .contact-item a { display: inline-flex; align-items: center; }
+    .header-right { display: contents; }
+    .whatsapp-link { order: 2; white-space: nowrap; margin-left: auto; align-items: center; }
+    .social-icons { order: 1; align-items: center; gap: 10px; }
+
+    /* Ajustes no Banner para Mobile */
+    .banner-section {
+        width: 100vw; /* Força a seção do banner a ocupar toda a largura da viewport */
+        margin-left: 50%;
+        transform: translateX(-50%); /* Centraliza a seção se ela estiver dentro de outro container */
+        overflow: hidden; /* Essencial para cortar a imagem que vai vazar */
+        position: relative; /* Mantém para os indicadores */
+    }
+    /* Faz o .container dentro do banner-section não restringir a largura no mobile */
+    .banner-section > .container {
+        width: 100%;
+        max-width: none;
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0; /* Zera margens para ocupar o banner-section */
+    }
+    /* O .carousel-container já é width: 100%; */
+
+    .carousel-slide img {
+        width: 140vw; /* Imagem com 120% da largura da viewport */
+        position: relative;
+        left: 50%; /* Move o ponto de início da imagem para o centro do seu container (que é 100vw) */
+        transform: translateX(-50%); /* Recua a imagem em 50% DA SUA PRÓPRIA LARGURA (120vw), centralizando-a */
+                                     /* Isso faz com que 10vw vazem para cada lado da tela de 100vw */
+        max-width: none; /* Garante que não haja restrição */
+    }
+
+    /* Indicadores menores e centralizados no mobile */
+    .carousel-indicators {
+        left: 50%; /* Centraliza */
+        transform: translateX(-50%); /* Centraliza */
+        bottom: 10px;
+        gap: 5px;
+    }
+    .indicator-item {
+        width: 35px; /* Menor */
+        height: 3px;  /* Mantém fina */
+    }
+}
