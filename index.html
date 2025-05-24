@@ -61,7 +61,7 @@
 
     <section class="banner-section">
         <div class="container"> 
-            <div class="carousel-container">
+            <div class="carousel-container"> {/* Eventos de touch são adicionados aqui */}
                 <div class="carousel-slide">
                     <img src="imagens/banner1.png" alt="Banner 1">
                 </div>
@@ -74,13 +74,14 @@
                 <div class="carousel-slide">
                     <img src="imagens/banner4.png" alt="Banner 4">
                 </div>
+
+                <div class="carousel-indicators">
+                    <button type="button" class="indicator-item" data-slide-to="0" aria-label="Ir para slide 1"></button>
+                    <button type="button" class="indicator-item" data-slide-to="1" aria-label="Ir para slide 2"></button>
+                    <button type="button" class="indicator-item" data-slide-to="2" aria-label="Ir para slide 3"></button>
+                    <button type="button" class="indicator-item" data-slide-to="3" aria-label="Ir para slide 4"></button>
+                </div>
             </div>
-        </div>
-        <div class="carousel-indicators">
-            <button type="button" class="indicator-item" data-slide-to="0" aria-label="Ir para slide 1"></button>
-            <button type="button" class="indicator-item" data-slide-to="1" aria-label="Ir para slide 2"></button>
-            <button type="button" class="indicator-item" data-slide-to="2" aria-label="Ir para slide 3"></button>
-            <button type="button" class="indicator-item" data-slide-to="3" aria-label="Ir para slide 4"></button>
         </div>
     </section>
 

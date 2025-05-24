@@ -8,18 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentSlide = 0;
     let autoRotateInterval;
+    
+    // Variáveis para o swipe
     let touchStartX = 0;
+    let touchStartY = 0; // Para ajudar a diferenciar swipe de scroll vertical
     let touchEndX = 0;
 
     const indicatorsContainer = document.querySelector('.carousel-indicators');
 
     if (slides.length > 0) {
         console.log("Slides encontrados:", slides.length);
-        if (indicators.length === slides.length) {
-            console.log("Indicadores encontrados:", indicators.length);
-        } else {
-            console.warn("Número de slides e indicadores não corresponde. Indicadores podem não funcionar corretamente. Slides:", slides.length, "Indicadores:", indicators.length);
-        }
 
         function updateIndicators(activeIndex) {
             if (indicators.length === slides.length) {
@@ -60,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Configuração dos listeners dos indicadores
         if (indicators.length === slides.length && slides.length > 1) {
             indicators.forEach(indicator => {
                 indicator.addEventListener('click', function() {
@@ -76,28 +75,59 @@ document.addEventListener('DOMContentLoaded', function() {
             if(indicatorsContainer) indicatorsContainer.classList.add('hidden');
         }
 
-        if (carouselContainer && slides.length > 1) { // Adiciona eventos de touch apenas se houver carrossel e mais de 1 slide
+        // Touch events para mobile/touch
+        if (carouselContainer && slides.length > 1) {
             carouselContainer.addEventListener('touchstart', function(event) {
                 touchStartX = event.touches[0].clientX;
+                touchStartY = event.touches[0].clientY; // Captura Y inicial
+                // console.log('Touch start X:', touchStartX, 'Y:', touchStartY);
+            }, { passive: true }); // passive:true é geralmente ok para touchstart
+
+            carouselContainer.addEventListener('touchmove', function(event) {
+                // Se quisermos previnir o scroll vertical durante um swipe horizontal claro,
+                // precisaríamos de { passive: false } e chamar event.preventDefault() aqui
+                // condicionalmente. Por ora, vamos manter simples.
+                // A lógica principal será no touchend.
             }, { passive: true });
 
+
             carouselContainer.addEventListener('touchend', function(event) {
+                if (touchStartX === 0) { // Se não houve touchstart (ex: toque muito breve ou erro)
+                    return;
+                }
                 touchEndX = event.changedTouches[0].clientX;
-                handleSwipe();
+                let touchEndY = event.changedTouches[0].clientY; // Captura Y final
+                // console.log('Touch end X:', touchEndX, 'Y:', touchEndY);
+                handleSwipe(touchEndY); // Passa touchEndY para a função
+
+                // Reseta os pontos de início para o próximo swipe
+                touchStartX = 0;
+                touchStartY = 0;
             }, { passive: true });
         }
 
-        function handleSwipe() {
-            const swipeThreshold = 50; 
-            const diffX = touchStartX - touchEndX;
+        function handleSwipe(currentTouchEndY) {
+            const swipeThresholdX = 40;  // Mínimo de pixels horizontais para considerar swipe
+            const swipeThresholdY = 60;  // Máximo de pixels verticais para ainda ser um swipe horizontal
 
-            if (Math.abs(diffX) > swipeThreshold) { 
-                if (diffX > 0) { 
+            let diffX = touchStartX - touchEndX;
+            let diffY = Math.abs(touchStartY - currentTouchEndY); // Diferença vertical absoluta
+
+            // console.log(`Swipe attempt: diffX=${diffX}, diffY=${diffY}`);
+
+            // Verifica se é predominantemente horizontal e excede o threshold horizontal
+            if (Math.abs(diffX) > swipeThresholdX && diffY < swipeThresholdY) {
+                console.log("Swipe horizontal detectado!");
+                if (diffX > 0) { // Swiped left (arrastou da direita para a esquerda)
+                    console.log('Swipe para esquerda -> Próximo slide');
                     moveToNextSlide();
-                } else { 
+                } else { // Swiped right (arrastou da esquerda para a direita)
+                    console.log('Swipe para direita -> Slide anterior');
                     moveToPrevSlide();
                 }
-                startAutoRotate(); 
+                startAutoRotate(); // Reinicia o timer da rotação automática
+            } else {
+                // console.log("Não foi um swipe horizontal válido.");
             }
         }
 
