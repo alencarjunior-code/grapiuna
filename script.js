@@ -1,142 +1,365 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Script do carrossel iniciado!");
+    // --- LÓGICA DO CARROSSEL DE BANNER ---
+    const bannerCarouselContainer = document.querySelector('.banner-section .carousel-container');
+    const bannerSlides = document.querySelectorAll('.banner-section .carousel-slide');
+    const bannerIndicators = document.querySelectorAll('.banner-section .indicator-item');
+    const bannerSlideIntervalTime = 5000;
+    let currentBannerSlide = 0;
+    let bannerAutoRotateInterval;
+    let bannerTouchStartX = 0;
+    let bannerTouchStartY = 0;
+    let bannerTouchEndX = 0;
+    const bannerIndicatorsContainer = document.querySelector('.banner-section .carousel-indicators');
 
-    const carouselContainer = document.querySelector('.carousel-container');
-    const slides = document.querySelectorAll('.carousel-slide');
-    const indicators = document.querySelectorAll('.indicator-item');
-    const slideIntervalTime = 5000;
-    
-    let currentSlide = 0;
-    let autoRotateInterval;
-    
-    // Variáveis para o swipe
-    let touchStartX = 0;
-    let touchStartY = 0; // Para ajudar a diferenciar swipe de scroll vertical
-    let touchEndX = 0;
-
-    const indicatorsContainer = document.querySelector('.carousel-indicators');
-
-    if (slides.length > 0) {
-        console.log("Slides encontrados:", slides.length);
-
-        function updateIndicators(activeIndex) {
-            if (indicators.length === slides.length) {
-                indicators.forEach((indicator, index) => {
+    if (bannerSlides.length > 0) {
+        function updateBannerIndicators(activeIndex) {
+            if (bannerIndicators.length === bannerSlides.length) {
+                bannerIndicators.forEach((indicator, index) => {
                     indicator.classList.toggle('active', index === activeIndex);
                 });
             }
         }
-
-        function showSlide(index) {
-            slides.forEach((slide) => {
-                slide.classList.remove('active');
-            });
-            
-            if (slides[index]) {
-                slides[index].classList.add('active');
-                updateIndicators(index);
-                currentSlide = index;
-            } else {
-                console.error("Tentativa de mostrar slide com índice inválido:", index);
+        function showBannerSlide(index) {
+            const N = bannerSlides.length;
+            if (N === 0) return;
+            const effectiveIndex = (index % N + N) % N; 
+            bannerSlides.forEach((slide) => slide.classList.remove('active'));
+            if (bannerSlides[effectiveIndex]) {
+                bannerSlides[effectiveIndex].classList.add('active');
+                updateBannerIndicators(effectiveIndex);
+                currentBannerSlide = effectiveIndex;
             }
         }
-
-        function moveToNextSlide() {
-            let newIndex = (currentSlide + 1) % slides.length;
-            showSlide(newIndex);
-        }
-
-        function moveToPrevSlide() {
-            let newIndex = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(newIndex);
-        }
-
-        function startAutoRotate() {
-            clearInterval(autoRotateInterval); 
-            if (slides.length > 1) {
-                autoRotateInterval = setInterval(moveToNextSlide, slideIntervalTime);
+        function moveToNextBannerSlide() { showBannerSlide(currentBannerSlide + 1); }
+        function moveToPrevBannerSlide() { showBannerSlide(currentBannerSlide - 1); }
+        function startBannerAutoRotate() {
+            clearInterval(bannerAutoRotateInterval); 
+            if (bannerSlides.length > 1) {
+                bannerAutoRotateInterval = setInterval(moveToNextBannerSlide, bannerSlideIntervalTime);
             }
         }
-
-        // Configuração dos listeners dos indicadores
-        if (indicators.length === slides.length && slides.length > 1) {
-            indicators.forEach(indicator => {
+        if (bannerIndicators.length === bannerSlides.length && bannerSlides.length > 1) {
+            bannerIndicators.forEach(indicator => {
                 indicator.addEventListener('click', function() {
                     const slideTo = parseInt(this.dataset.slideTo);
-                    if (slideTo !== currentSlide && slides[slideTo]) { 
-                        showSlide(slideTo);
-                        startAutoRotate(); 
+                    if (slideTo !== currentBannerSlide && bannerSlides[slideTo]) { 
+                        showBannerSlide(slideTo);
+                        startBannerAutoRotate(); 
                     }
                 });
             });
         }
-        
-        if (slides.length <= 1) {
-            if(indicatorsContainer) indicatorsContainer.classList.add('hidden');
+        if (bannerSlides.length <= 1) {
+            if(bannerIndicatorsContainer) bannerIndicatorsContainer.classList.add('hidden');
         }
-
-        // Touch events para mobile/touch
-        if (carouselContainer && slides.length > 1) {
-            carouselContainer.addEventListener('touchstart', function(event) {
-                touchStartX = event.touches[0].clientX;
-                touchStartY = event.touches[0].clientY; // Captura Y inicial
-                // console.log('Touch start X:', touchStartX, 'Y:', touchStartY);
-            }, { passive: true }); // passive:true é geralmente ok para touchstart
-
-            carouselContainer.addEventListener('touchmove', function(event) {
-                // Se quisermos previnir o scroll vertical durante um swipe horizontal claro,
-                // precisaríamos de { passive: false } e chamar event.preventDefault() aqui
-                // condicionalmente. Por ora, vamos manter simples.
-                // A lógica principal será no touchend.
-            }, { passive: true });
-
-
-            carouselContainer.addEventListener('touchend', function(event) {
-                if (touchStartX === 0) { // Se não houve touchstart (ex: toque muito breve ou erro)
-                    return;
-                }
-                touchEndX = event.changedTouches[0].clientX;
-                let touchEndY = event.changedTouches[0].clientY; // Captura Y final
-                // console.log('Touch end X:', touchEndX, 'Y:', touchEndY);
-                handleSwipe(touchEndY); // Passa touchEndY para a função
-
-                // Reseta os pontos de início para o próximo swipe
-                touchStartX = 0;
-                touchStartY = 0;
+        if (bannerCarouselContainer && bannerSlides.length > 1) {
+            bannerCarouselContainer.addEventListener('touchstart', e => { bannerTouchStartX = e.touches?.[0]?.clientX; bannerTouchStartY = e.touches?.[0]?.clientY; }, { passive: true });
+            bannerCarouselContainer.addEventListener('touchend', e => {
+                if (bannerTouchStartX === 0) return;
+                bannerTouchEndX = e.changedTouches?.[0]?.clientX;
+                let bannerTouchEndY = e.changedTouches?.[0]?.clientY;
+                handleBannerSwipe(bannerTouchEndY);
+                bannerTouchStartX = 0; bannerTouchStartY = 0;
             }, { passive: true });
         }
-
-        function handleSwipe(currentTouchEndY) {
-            const swipeThresholdX = 40;  // Mínimo de pixels horizontais para considerar swipe
-            const swipeThresholdY = 60;  // Máximo de pixels verticais para ainda ser um swipe horizontal
-
-            let diffX = touchStartX - touchEndX;
-            let diffY = Math.abs(touchStartY - currentTouchEndY); // Diferença vertical absoluta
-
-            // console.log(`Swipe attempt: diffX=${diffX}, diffY=${diffY}`);
-
-            // Verifica se é predominantemente horizontal e excede o threshold horizontal
+        function handleBannerSwipe(currentTouchEndY) {
+            const swipeThresholdX = 40, swipeThresholdY = 60;
+            let diffX = bannerTouchStartX - bannerTouchEndX;
+            let diffY = Math.abs(bannerTouchStartY - currentTouchEndY);
             if (Math.abs(diffX) > swipeThresholdX && diffY < swipeThresholdY) {
-                console.log("Swipe horizontal detectado!");
-                if (diffX > 0) { // Swiped left (arrastou da direita para a esquerda)
-                    console.log('Swipe para esquerda -> Próximo slide');
-                    moveToNextSlide();
-                } else { // Swiped right (arrastou da esquerda para a direita)
-                    console.log('Swipe para direita -> Slide anterior');
-                    moveToPrevSlide();
+                if (diffX > 0) moveToNextBannerSlide(); else moveToPrevBannerSlide();
+                startBannerAutoRotate(); 
+            }
+        }
+        if (bannerSlides.length > 0) {
+            showBannerSlide(0);
+            startBannerAutoRotate();
+        }
+    } else {
+        if(bannerIndicatorsContainer) bannerIndicatorsContainer.classList.add('hidden');
+    }
+
+    // --- CARROSSEL DE SERVIÇOS (6 ITENS, LOOP, 3 VISÍVEIS NO DESKTOP) ---
+    const servicosViewport = document.querySelector('.servicos-box-carousel-container');
+    const servicosWrapper = document.querySelector('.servicos-box-wrapper');
+    const servicosIndicatorsContainer = document.querySelector('.servicos-carousel-indicators');
+
+    if (servicosViewport && servicosWrapper) {
+        let servicoBoxesOriginal = Array.from(servicosWrapper.querySelectorAll('.servico-box'));
+        let totalOriginalServicos = servicoBoxesOriginal.length; 
+
+        if (totalOriginalServicos > 0) {
+            let sbcItemsPerPage;
+            let sbcItemWidth;
+            let sbcItemMargin = 20; 
+            
+            let sbcCurrentLogicalIndex = 0; 
+            let sbcCurrentActualIndex = 0; 
+            let sbcClonesCount = 0;
+            let sbcIsTransitioning = false;
+            let sbcAutoRotateServicesInterval;
+            const sbcAutoRotateTime = 6000; // Intervalo para carrossel de serviços
+
+            function sbcSetupCarousel() {
+                // Pausa autorotate durante o setup para evitar conflitos
+                clearInterval(sbcAutoRotateServicesInterval);
+
+                totalOriginalServicos = servicosWrapper.querySelectorAll('.servico-box:not(.clone)').length;
+                if (totalOriginalServicos === 0) { // Se por algum motivo os originais sumiram, pega todos
+                    servicoBoxesOriginal = Array.from(servicosWrapper.querySelectorAll('.servico-box'));
+                    totalOriginalServicos = servicoBoxesOriginal.length;
                 }
-                startAutoRotate(); // Reinicia o timer da rotação automática
-            } else {
-                // console.log("Não foi um swipe horizontal válido.");
+
+
+                const viewportParentWidth = servicosViewport.parentElement.offsetWidth; 
+                let carouselViewportWidthToSet = viewportParentWidth;
+
+                if (window.innerWidth <= 768) { 
+                    sbcItemsPerPage = 1;
+                    sbcItemMargin = 15;
+                    sbcItemWidth = viewportParentWidth * 0.85; 
+                    carouselViewportWidthToSet = sbcItemWidth;
+                    servicosViewport.style.margin = '0 auto';
+                } else if (window.innerWidth <= 992) { 
+                    sbcItemsPerPage = 2;
+                    sbcItemMargin = 20;
+                    sbcItemWidth = (viewportParentWidth - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
+                    carouselViewportWidthToSet = viewportParentWidth;
+                    servicosViewport.style.margin = '0 auto';
+                } else { 
+                    sbcItemsPerPage = 3;
+                    sbcItemMargin = 20;
+                    
+                    const sobreContainerDesktop = document.querySelector('.sobre-container-desktop-ajustado');
+                    let referenceWidth = viewportParentWidth; 
+                    if (sobreContainerDesktop) {
+                        referenceWidth = sobreContainerDesktop.offsetWidth;
+                    }
+                    carouselViewportWidthToSet = referenceWidth;
+                    servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
+                    servicosViewport.style.margin = '0 auto';
+                    sbcItemWidth = (carouselViewportWidthToSet - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
+                }
+
+                // Limpa o wrapper e recria os itens originais para evitar duplicatas de clones
+                servicosWrapper.innerHTML = '';
+                servicoBoxesOriginal.forEach(boxOriginalHTML => {
+                    // Re-cria o elemento para garantir que não é um clone de uma iteração anterior
+                    const newBox = document.createElement('div');
+                    newBox.classList.add('servico-box');
+                    newBox.innerHTML = boxOriginalHTML.innerHTML; // Copia conteúdo interno
+                    // Copia data attributes
+                    for (const attr of boxOriginalHTML.attributes) {
+                        if (attr.name.startsWith('data-')) {
+                            newBox.setAttribute(attr.name, attr.value);
+                        }
+                    }
+                    servicosWrapper.appendChild(newBox);
+                });
+                
+                const currentBoxesInDom = Array.from(servicosWrapper.querySelectorAll('.servico-box'));
+
+                sbcClonesCount = 0;
+                if (totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) {
+                    sbcClonesCount = sbcItemsPerPage; // Número de clones em cada extremidade
+                    // Clonar para o final
+                    for (let i = 0; i < sbcClonesCount; i++) {
+                        const originalBox = servicoBoxesOriginal[i % totalOriginalServicos];
+                        const cloneEnd = originalBox.cloneNode(true);
+                        servicosWrapper.appendChild(cloneEnd);
+                    }
+                    // Clonar para o início
+                    for (let i = 0; i < sbcClonesCount; i++) {
+                        const originalBox = servicoBoxesOriginal[(totalOriginalServicos - sbcClonesCount + i + totalOriginalServicos) % totalOriginalServicos];
+                        const cloneStart = originalBox.cloneNode(true);
+                        servicosWrapper.insertBefore(cloneStart, servicosWrapper.firstChild);
+                    }
+                    sbcCurrentActualIndex = sbcClonesCount + sbcCurrentLogicalIndex;
+                } else {
+                    sbcCurrentActualIndex = sbcCurrentLogicalIndex;
+                    if (totalOriginalServicos > 0) {
+                         servicosWrapper.style.justifyContent = 'center';
+                    } else {
+                         servicosWrapper.style.justifyContent = 'flex-start';
+                    }
+                }
+                
+                const allBoxesNow = servicosWrapper.querySelectorAll('.servico-box');
+                allBoxesNow.forEach((box) => {
+                    box.style.flex = `0 0 ${sbcItemWidth}px`;
+                    box.style.minWidth = `${sbcItemWidth}px`;
+                    box.style.maxWidth = `${sbcItemWidth}px`;
+                    box.style.marginRight = `${sbcItemMargin}px`;
+                });
+                
+                if (allBoxesNow.length > 0) {
+                    const totalWrapperWidth = allBoxesNow.length * sbcItemWidth + (allBoxesNow.length) * sbcItemMargin;
+                    servicosWrapper.style.width = `${totalWrapperWidth - sbcItemMargin}px`;
+                    allBoxesNow[allBoxesNow.length-1].style.marginRight = '0px';
+                }
+
+                servicosWrapper.style.transition = 'none';
+                const initialTranslateX = -(sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin));
+                servicosWrapper.style.transform = `translateX(${initialTranslateX}px)`;
+                
+                setTimeout(() => {
+                    servicosWrapper.style.transition = 'transform 0.5s ease-in-out';
+                }, 50);
+
+                sbcCreateIndicators();
+                startSbcAutoRotate(); // Inicia ou reinicia o autorotate
+            }
+
+            function sbcCreateIndicators() {
+                if (!servicosIndicatorsContainer) return;
+                servicosIndicatorsContainer.innerHTML = '';
+                
+                const numIndicatorDots = totalOriginalServicos; // Um indicador por item original
+
+                if (numIndicatorDots <= 1 || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) {
+                    servicosIndicatorsContainer.classList.add('hidden'); return;
+                }
+                servicosIndicatorsContainer.classList.remove('hidden');
+
+                for (let i = 0; i < numIndicatorDots; i++) {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.classList.add('sbc-indicator-item');
+                    button.dataset.sbcSlideTo = i; 
+                    button.setAttribute('aria-label', `Ir para serviço ${i + 1}`);
+                    button.addEventListener('click', function() { 
+                        sbcGoToLogical(parseInt(this.dataset.sbcSlideTo)); 
+                        startSbcAutoRotate(); // Reinicia timer no clique do indicador
+                    });
+                    servicosIndicatorsContainer.appendChild(button);
+                }
+                sbcUpdateIndicators();
+            }
+
+            function sbcUpdateIndicators() {
+                const sbcIndicators = servicosIndicatorsContainer?.querySelectorAll('.sbc-indicator-item');
+                sbcIndicators?.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === sbcCurrentLogicalIndex);
+                });
+            }
+            
+            function sbcGoToLogical(logicalIndex, withTransition = true) {
+                if (sbcIsTransitioning && withTransition && totalOriginalServicos > sbcItemsPerPage) return;
+                
+                sbcCurrentLogicalIndex = (logicalIndex + totalOriginalServicos) % totalOriginalServicos;
+                
+                if (withTransition && totalOriginalServicos > sbcItemsPerPage) sbcIsTransitioning = true;
+                sbcCurrentActualIndex = (totalOriginalServicos > sbcItemsPerPage) ? sbcClonesCount + sbcCurrentLogicalIndex : sbcCurrentLogicalIndex;
+
+                servicosWrapper.style.transition = (withTransition && totalOriginalServicos > sbcItemsPerPage) ? 'transform 0.5s ease-in-out' : 'none';
+                servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+                sbcUpdateIndicators();
+
+                if (withTransition && totalOriginalServicos > sbcItemsPerPage) {
+                    servicosWrapper.addEventListener('transitionend', sbcHandleLoopJump, { once: true });
+                } else {
+                    sbcIsTransitioning = false;
+                }
+            }
+            
+            function sbcHandleLoopJump() {
+                sbcIsTransitioning = false;
+                const N = totalOriginalServicos;
+                const C = sbcClonesCount;
+
+                if (sbcCurrentActualIndex < C) { 
+                    sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N; 
+                    sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
+                    servicosWrapper.style.transition = 'none';
+                    servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+                } else if (sbcCurrentActualIndex >= C + N) { 
+                    sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N;
+                    sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
+                    servicosWrapper.style.transition = 'none';
+                    servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+                }
+                 sbcUpdateIndicators();
+            }
+
+            function sbcMove(direction) {
+                if (sbcIsTransitioning || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) return;
+                sbcGoToLogical(sbcCurrentLogicalIndex + direction);
+            }
+
+            function startSbcAutoRotate() {
+                clearInterval(sbcAutoRotateServicesInterval);
+                if (totalOriginalServicos > sbcItemsPerPage) { // Só rotaciona se houver mais itens do que o visível
+                    sbcAutoRotateServicesInterval = setInterval(() => sbcMove(1), sbcAutoRotateTime);
+                }
+            }
+            
+            sbcSetupCarousel(); // Configuração inicial
+            window.addEventListener('resize', sbcSetupCarousel);
+            startSbcAutoRotate(); // Inicia rotação automática para serviços
+
+            let sbcTouchStartX = 0, sbcTouchStartY = 0;
+            if (servicosViewport && totalOriginalServicos > sbcItemsPerPage) {
+                servicosViewport.addEventListener('touchstart', function(event) {
+                    sbcTouchStartX = event.touches[0].clientX;
+                    sbcTouchStartY = event.touches[0].clientY;
+                    clearInterval(sbcAutoRotateServicesInterval); // Pausa ao tocar
+                }, { passive: true });
+
+                servicosViewport.addEventListener('touchend', function(event) {
+                    if (sbcTouchStartX === 0) return;
+                    let sbcTouchEndX = event.changedTouches[0].clientX;
+                    let sbcTouchEndY = event.changedTouches[0].clientY;
+                    
+                    const swipeThresholdX = 40; const swipeThresholdY = 70;
+                    let diffX = sbcTouchStartX - sbcTouchEndX;
+                    let diffY = Math.abs(sbcTouchStartY - sbcTouchEndY);
+
+                    if (Math.abs(diffX) > swipeThresholdX && diffY < swipeThresholdY) {
+                        if (diffX > 0) { sbcMove(1); } 
+                        else { sbcMove(-1); }
+                    }
+                    sbcTouchStartX = 0; sbcTouchStartY = 0;
+                    startSbcAutoRotate(); // Reinicia após o swipe
+                }, { passive: true });
             }
         }
 
-        showSlide(0);
-        console.log("Primeiro slide (índice 0) deveria estar ativo.");
-        startAutoRotate();
+        // Lógica do Modal
+        const modalContainer = document.querySelector('.service-modal-container');
+        if (servicosWrapper && modalContainer) {
+            const modalTitleEl = modalContainer.querySelector('#service-modal-title');
+            const modalTextEl = modalContainer.querySelector('#service-modal-text');
+            const modalCloseButton = modalContainer.querySelector('.modal-close-button');
 
-    } else {
-        console.error("Nenhum elemento .carousel-slide encontrado!");
-        if(indicatorsContainer) indicatorsContainer.classList.add('hidden');
+            if (modalTitleEl && modalTextEl && modalCloseButton) {
+                servicosWrapper.addEventListener('click', function(event) {
+                    const clickedBox = event.target.closest('.servico-box');
+                    if (clickedBox) {
+                        const title = clickedBox.dataset.serviceTitle || "Detalhes do Serviço";
+                        let textData = clickedBox.dataset.serviceText || "Informação detalhada não disponível.|Por favor, entre em contato para mais informações.";
+                        const paragraphs = textData.split('|').map(pText => `<p>${pText.trim()}</p>`).join('');
+
+                        modalTitleEl.textContent = title;
+                        modalTextEl.innerHTML = paragraphs;
+                        modalContainer.classList.add('active');
+                    }
+                });
+
+                if (!modalCloseButton.dataset.listenerAttached) {
+                    modalCloseButton.addEventListener('click', () => {
+                        modalContainer.classList.remove('active');
+                    });
+                    modalCloseButton.dataset.listenerAttached = 'true';
+                }
+                if (!modalContainer.dataset.listenerAttached) {
+                     modalContainer.addEventListener('click', (e) => {
+                        if (e.target === modalContainer) {
+                            modalContainer.classList.remove('active');
+                        }
+                    });
+                    modalContainer.dataset.listenerAttached = 'true';
+                }
+            }
+        }
     }
 });
