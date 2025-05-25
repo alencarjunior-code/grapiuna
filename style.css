@@ -120,7 +120,7 @@ body {
 
 .servicos-box-carousel-container { /* Viewport do carrossel */
     position: relative;
-    width: 100%;
+    width: 100%; /* JS pode ajustar isso, mas padrão é preencher */
     overflow: hidden;
     /* margin: 0 auto; /* JS cuidará da centralização no mobile se necessário */
 }
@@ -229,13 +229,12 @@ body {
 
     .servicos-section { /* Tablet: Retângulo azul é 90% e centralizado */
         width: 90%;
-        /* padding e margin vertical herdados da base, margin horizontal 'auto' herdada para centralizar a seção */
-        padding: 20px 0 25px 0; /* Mantido do seu original para tablet */
-        margin: 20px auto 25px auto; /* Mantido do seu original para tablet */
+        padding: 20px 0 25px 0;
+        margin: 20px auto 25px auto;
     }
     .servicos-section > .container.servicos-container-conteudo { /* Tablet: Conteúdo preenche o .servicos-section */
         width: 100%;
-        padding: 0 15px; /* Mantido do seu original para tablet */
+        padding: 0 15px;
     }
     .servico-box-imagem { height: 150px; }
     .sbc-indicator-item { width: 40px; }
@@ -265,83 +264,88 @@ body {
         padding: 20px 0px;
     }
     .sobre-empresa-section .sobre-container-desktop-ajustado {
-        width: 90%;
-        max-width: 1200px;
+        width: 90%; /* Mantido do original */
+        max-width: 1200px; /* Mantido do original */
     }
     .titulo-empresa-wrapper {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        flex-direction: column; /* Logo acima do nome */
+        align-items: center;   /* Centraliza horizontalmente */
+        text-align: center;    /* Centraliza o texto do nome */
         gap: 8px;
-        margin-bottom: 25px;
+        margin-bottom: 25px;   /* Espaço antes da imagem/texto */
     }
     .sobre-logo-titulo {
-        height: calc(1.5em * 1.3);
-        margin-bottom: 5px;
+        height: calc(1.5em * 1.3); /* Mantido do original */
+        margin-bottom: 5px; /* Mantido do original */
     }
     .sobre-nome-empresa {
-        font-size: 1.5em;
+        font-size: 1.5em; /* Mantido do original */
     }
     .sobre-empresa-grid {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 25px;
-    }
-    .sobre-coluna-imagem {
-        order: 0;
-        width: 100%;
-        max-width: 350px;
-        display: flex;
-        justify-content: center;
-    }
-     .sobre-imagem-ilustrativa { /* Mobile */
-        max-width: 100%;
-    }
-    .sobre-coluna-texto {
-        order: 1;
-        width: 100%;
-    }
-    .sobre-texto-descricao {
-        font-size: 0.9em;
-        text-align: left;
-        margin-bottom: 20px;
-    }
-    .sobre-logos-parceiros {
-        justify-content: center;
-        gap: 20px;
-        padding-top: 0;
-        margin-top: 10px;
-    }
-    .logo-parceiro {
-        height: 40px;
+        flex-direction: column; /* Itens empilhados verticalmente */
+        align-items: center; /* Centraliza os itens da coluna */
+        gap: 25px; /* Mantido do original */
     }
 
-    /* --- INÍCIO DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
+    /* MODIFICADO PARA MOBILE - Sobre a Empresa */
+    .sobre-coluna-imagem {
+        order: 0; /* Imagem vem primeiro */
+        width: 100%; /* Ocupa a largura disponível da coluna grid */
+        max-width: 350px; /* Limita a largura máxima da imagem, se desejado */
+        display: flex; /* Para centralizar a imagem dentro dela, se necessário */
+        justify-content: center; /* Centraliza a imagem na coluna */
+        margin-bottom: 20px; /* Adiciona espaço abaixo da imagem antes do texto */
+    }
+    .sobre-imagem-ilustrativa {
+        width: 100%; /* Imagem preenche a .sobre-coluna-imagem */
+        height: auto; /* Mantém proporção */
+        max-width: 100%; /* Garante que não exceda o contêiner da coluna */
+        object-fit: contain; /* Garante que toda imagem seja visível e proporcional */
+        border-radius: 8px; /* Mantido do original */
+    }
+    .sobre-coluna-texto {
+        order: 1; /* Texto vem depois da imagem */
+        width: 100%; /* Ocupa a largura disponível da coluna grid */
+        text-align: left; /* Alinhamento do texto, pode ser 'center' se preferir */
+    }
+    /* FIM DAS MODIFICAÇÕES - Sobre a Empresa */
+
+    .sobre-texto-descricao {
+        font-size: 0.9em; /* Mantido do original */
+        /* text-align: left; /* Definido em .sobre-coluna-texto agora */
+        margin-bottom: 20px; /* Mantido do original */
+    }
+    .sobre-logos-parceiros {
+        justify-content: center; /* Mantido do original */
+        gap: 20px; /* Mantido do original */
+        padding-top: 0; /* Mantido do original */
+        margin-top: 10px; /* Mantido do original */
+    }
+    .logo-parceiro {
+        height: 40px; /* Mantido do original */
+    }
+
+    /* --- AJUSTES MOBILE PARA SEÇÃO DE SERVIÇOS --- */
     .servicos-section { /* Mobile: Fundo azul ocupa TODA A LARGURA DA TELA */
-        width: 100%; /* SOBRESCREVE o width: 90% que estava aqui no seu CSS original para mobile */
-        padding: 20px 0 25px 0; /* Mantém padding vertical do seu original para mobile */
-        margin: 20px 0 25px 0;  /* Remove margens laterais automáticas para ser 100% de largura */
-        /* background-color, color, box-sizing herdados da base */
+        width: 100%; 
+        padding: 20px 0 25px 0; 
+        margin: 20px 0 25px 0;  
     }
     .servicos-section > .container.servicos-container-conteudo { /* Mobile: Conteúdo do carrossel */
-        width: 70%; /* LARGURA DO CONTAINER INTERNO DO CONTEÚDO. (Ex: 70% da tela, era 100% de um pai de 90%) */
-        margin: 0 auto; /* Centraliza este container de conteúdo */
-        padding: 0 10px; /* Mantém padding interno do seu original para mobile */
-        /* max-width: none; e box-sizing herdados */
+        width: 85%; /* Aumentado para dar mais espaço ao item do carrossel */
+        margin: 0 auto; 
+        padding: 0; /* Removido padding lateral para que o JS controle totalmente a largura do item */
+        box-sizing: border-box; /* Adicionado para consistência */
     }
-    /* O JavaScript modificado na resposta anterior (sbcItemWidth = usableWidthForCarouselItems * 0.80;)
-       fará com que cada item do carrossel ocupe 80% da largura deste container de 70% (ou seja, 56% da tela),
-       e o viewport do carrossel (.servicos-box-carousel-container) será centralizado dentro deste container.
-       Isso deve atender ao visual das "linhas verdes".
-    */
-    /* --- FIM DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
+    /* O JS vai definir a largura do .servicos-box-carousel-container e do .servico-box */
+    /* FIM DOS AJUSTES MOBILE PARA SEÇÃO DE SERVIÇOS --- */
 
     .servico-box-imagem { height: 140px; }
     .servico-box-conteudo h3 { font-size: 1em; }
     .servico-box-conteudo p { font-size: 0.8em; }
-    .servicos-carousel-indicators { padding-top: 20px; } /* Já centralizado por flex na base */
+    .servicos-carousel-indicators { padding-top: 20px; } 
     .sbc-indicator-item { width: 30px; height: 3px; }
     .service-modal-content { max-width: 90%; padding: 20px; }
     .service-modal-content h3 { font-size: 1.3em; }

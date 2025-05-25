@@ -98,57 +98,78 @@ document.addEventListener('DOMContentLoaded', function() {
             let sbcClonesCount = 0;
             let sbcIsTransitioning = false;
             let sbcAutoRotateServicesInterval;
-            const sbcAutoRotateTime = 6000; // Intervalo para carrossel de serviços
+            const sbcAutoRotateTime = 6000;
 
             function sbcSetupCarousel() {
-                // Pausa autorotate durante o setup para evitar conflitos
                 clearInterval(sbcAutoRotateServicesInterval);
 
                 totalOriginalServicos = servicosWrapper.querySelectorAll('.servico-box:not(.clone)').length;
-                if (totalOriginalServicos === 0) { // Se por algum motivo os originais sumiram, pega todos
+                if (totalOriginalServicos === 0) {
                     servicoBoxesOriginal = Array.from(servicosWrapper.querySelectorAll('.servico-box'));
                     totalOriginalServicos = servicoBoxesOriginal.length;
                 }
 
-
                 const viewportParentWidth = servicosViewport.parentElement.offsetWidth; 
                 let carouselViewportWidthToSet = viewportParentWidth;
 
+                // ***** INÍCIO DAS MODIFICAÇÕES PARA MOBILE NO CARROSSEL DE SERVIÇOS *****
                 if (window.innerWidth <= 768) { 
                     sbcItemsPerPage = 1;
-                    sbcItemMargin = 15;
-                    sbcItemWidth = viewportParentWidth * 0.85; 
-                    carouselViewportWidthToSet = sbcItemWidth;
-                    servicosViewport.style.margin = '0 auto';
-                } else if (window.innerWidth <= 992) { 
+                    sbcItemMargin = 15; // Margem entre itens, se houver mais de um visível ou para clones
+
+                    // O '.servicos-container-conteudo' (pai do viewport) tem width: 85% e margin: auto no CSS mobile.
+                    // O 'viewportParentWidth' já reflete a largura do '.servicos-container-conteudo'.
+                    const containerConteudoWidth = viewportParentWidth;
+                    
+                    // O viewport do carrossel (.servicos-box-carousel-container) ocupa a largura total do seu pai.
+                    carouselViewportWidthToSet = containerConteudoWidth; 
+                    servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
+                    servicosViewport.style.margin = '0 auto'; // Garante centralização do viewport
+
+                    // O item do carrossel (.servico-box) ocupa 100% da largura do viewport.
+                    // O espaçamento visual lateral virá do container pai '.servicos-container-conteudo' que tem width: 85% da tela.
+                    sbcItemWidth = carouselViewportWidthToSet; 
+
+                } else if (window.innerWidth <= 992) { // Tablet
                     sbcItemsPerPage = 2;
                     sbcItemMargin = 20;
-                    sbcItemWidth = (viewportParentWidth - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
-                    carouselViewportWidthToSet = viewportParentWidth;
+                    // No tablet, .servicos-container-conteudo (pai do viewport) tem width 100% do .servicos-section (que é 90% da tela).
+                    // E tem padding: 0 15px.
+                    // viewportParentWidth é a largura do .servicos-container-conteudo.
+                    // Os itens dividirão essa largura, considerando a margem.
+                    carouselViewportWidthToSet = viewportParentWidth; // Viewport ocupa o pai
+                    servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
                     servicosViewport.style.margin = '0 auto';
-                } else { 
+
+                    sbcItemWidth = (carouselViewportWidthToSet - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
+                
+                } else { // Desktop
                     sbcItemsPerPage = 3;
                     sbcItemMargin = 20;
                     
                     const sobreContainerDesktop = document.querySelector('.sobre-container-desktop-ajustado');
                     let referenceWidth = viewportParentWidth; 
                     if (sobreContainerDesktop) {
-                        referenceWidth = sobreContainerDesktop.offsetWidth;
+                        // No desktop, .servicos-container-conteudo (pai do viewport) tem width 100% do .servicos-section (que é 80% da tela)
+                        // e padding: 0 20px.
+                        // A intenção original parecia querer alinhar com .sobre-container-desktop-ajustado,
+                        // mas o pai do viewport é .servicos-container-conteudo.
+                        // Usaremos a largura do pai do viewport como referência principal.
+                        referenceWidth = viewportParentWidth; // Largura do .servicos-container-conteudo
                     }
                     carouselViewportWidthToSet = referenceWidth;
                     servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
                     servicosViewport.style.margin = '0 auto';
                     sbcItemWidth = (carouselViewportWidthToSet - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
                 }
+                // ***** FIM DAS MODIFICAÇÕES PARA MOBILE/TABLET/DESKTOP NO CARROSSEL DE SERVIÇOS *****
 
-                // Limpa o wrapper e recria os itens originais para evitar duplicatas de clones
+
                 servicosWrapper.innerHTML = '';
                 servicoBoxesOriginal.forEach(boxOriginalHTML => {
-                    // Re-cria o elemento para garantir que não é um clone de uma iteração anterior
                     const newBox = document.createElement('div');
                     newBox.classList.add('servico-box');
-                    newBox.innerHTML = boxOriginalHTML.innerHTML; // Copia conteúdo interno
-                    // Copia data attributes
+                    newBox.innerHTML = boxOriginalHTML.innerHTML; 
                     for (const attr of boxOriginalHTML.attributes) {
                         if (attr.name.startsWith('data-')) {
                             newBox.setAttribute(attr.name, attr.value);
@@ -161,14 +182,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 sbcClonesCount = 0;
                 if (totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) {
-                    sbcClonesCount = sbcItemsPerPage; // Número de clones em cada extremidade
-                    // Clonar para o final
+                    sbcClonesCount = sbcItemsPerPage; 
                     for (let i = 0; i < sbcClonesCount; i++) {
                         const originalBox = servicoBoxesOriginal[i % totalOriginalServicos];
                         const cloneEnd = originalBox.cloneNode(true);
                         servicosWrapper.appendChild(cloneEnd);
                     }
-                    // Clonar para o início
                     for (let i = 0; i < sbcClonesCount; i++) {
                         const originalBox = servicoBoxesOriginal[(totalOriginalServicos - sbcClonesCount + i + totalOriginalServicos) % totalOriginalServicos];
                         const cloneStart = originalBox.cloneNode(true);
@@ -193,12 +212,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 if (allBoxesNow.length > 0) {
-                    const totalWrapperWidth = allBoxesNow.length * sbcItemWidth + (allBoxesNow.length) * sbcItemMargin;
-                    servicosWrapper.style.width = `${totalWrapperWidth - sbcItemMargin}px`;
-                    allBoxesNow[allBoxesNow.length-1].style.marginRight = '0px';
+                    const totalWrapperWidth = allBoxesNow.length * sbcItemWidth + (allBoxesNow.length -1) * sbcItemMargin; // Correção para não somar margem do último
+                    servicosWrapper.style.width = `${totalWrapperWidth}px`; 
+                    // Remove margem direita do último item REAL (não clone), se não houver loop infinito.
+                    // Se houver loop, a margem é necessária para o cálculo de translate.
+                    // A lógica atual com clones e translate já deve lidar bem com isso.
+                    // O último item (seja clone ou não) deve ter a margem para o cálculo correto do translate,
+                    // a menos que seja o último item visível e não haja mais para onde ir.
+                    // Vamos manter a margem em todos para consistência do cálculo de translate.
+                    // Apenas o último item visualmente não deveria ter uma margem se não houver mais itens,
+                    // mas com carrossel infinito, isso é menos relevante.
                 }
 
+
                 servicosWrapper.style.transition = 'none';
+                // O cálculo de translateX deve considerar que a margem direita é aplicada a cada item
                 const initialTranslateX = -(sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin));
                 servicosWrapper.style.transform = `translateX(${initialTranslateX}px)`;
                 
@@ -207,16 +235,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 50);
 
                 sbcCreateIndicators();
-                startSbcAutoRotate(); // Inicia ou reinicia o autorotate
+                startSbcAutoRotate(); 
             }
 
             function sbcCreateIndicators() {
                 if (!servicosIndicatorsContainer) return;
                 servicosIndicatorsContainer.innerHTML = '';
                 
-                const numIndicatorDots = totalOriginalServicos; // Um indicador por item original
+                const numIndicatorDots = totalOriginalServicos;
 
-                if (numIndicatorDots <= 1 || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) {
+                // Condição para esconder indicadores: se for 1 item OU (se itens originais <= itens por página E não for mobile)
+                // No mobile (sbcItemsPerPage é 1), só esconde se totalOriginalServicos <= 1.
+                let hideIndicators = (totalOriginalServicos <= 1);
+                if (window.innerWidth > 768 && totalOriginalServicos <= sbcItemsPerPage) {
+                    hideIndicators = true;
+                }
+
+                if (hideIndicators) {
                     servicosIndicatorsContainer.classList.add('hidden'); return;
                 }
                 servicosIndicatorsContainer.classList.remove('hidden');
@@ -229,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.setAttribute('aria-label', `Ir para serviço ${i + 1}`);
                     button.addEventListener('click', function() { 
                         sbcGoToLogical(parseInt(this.dataset.sbcSlideTo)); 
-                        startSbcAutoRotate(); // Reinicia timer no clique do indicador
+                        startSbcAutoRotate(); 
                     });
                     servicosIndicatorsContainer.appendChild(button);
                 }
@@ -249,13 +284,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 sbcCurrentLogicalIndex = (logicalIndex + totalOriginalServicos) % totalOriginalServicos;
                 
                 if (withTransition && totalOriginalServicos > sbcItemsPerPage) sbcIsTransitioning = true;
-                sbcCurrentActualIndex = (totalOriginalServicos > sbcItemsPerPage) ? sbcClonesCount + sbcCurrentLogicalIndex : sbcCurrentLogicalIndex;
+                sbcCurrentActualIndex = (totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) ? sbcClonesCount + sbcCurrentLogicalIndex : sbcCurrentLogicalIndex;
 
-                servicosWrapper.style.transition = (withTransition && totalOriginalServicos > sbcItemsPerPage) ? 'transform 0.5s ease-in-out' : 'none';
+                servicosWrapper.style.transition = (withTransition && totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) ? 'transform 0.5s ease-in-out' : 'none';
                 servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
                 sbcUpdateIndicators();
 
-                if (withTransition && totalOriginalServicos > sbcItemsPerPage) {
+                if (withTransition && totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) {
                     servicosWrapper.addEventListener('transitionend', sbcHandleLoopJump, { once: true });
                 } else {
                     sbcIsTransitioning = false;
@@ -282,27 +317,43 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             function sbcMove(direction) {
-                if (sbcIsTransitioning || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) return;
+                // Só permite mover se houver mais itens que o visível, ou se for mobile (onde sbcItemsPerPage é 1 e sempre pode mover se houver > 1 item)
+                let canMove = totalOriginalServicos > sbcItemsPerPage;
+                if (window.innerWidth <= 768 && totalOriginalServicos > 1) { // Mobile específico
+                    canMove = true;
+                }
+
+                if (sbcIsTransitioning || !canMove) return;
                 sbcGoToLogical(sbcCurrentLogicalIndex + direction);
             }
 
             function startSbcAutoRotate() {
                 clearInterval(sbcAutoRotateServicesInterval);
-                if (totalOriginalServicos > sbcItemsPerPage) { // Só rotaciona se houver mais itens do que o visível
+                 let canAutoRotate = totalOriginalServicos > sbcItemsPerPage;
+                 if (window.innerWidth <= 768 && totalOriginalServicos > 1) { // Mobile específico
+                    canAutoRotate = true;
+                }
+                if (canAutoRotate) { 
                     sbcAutoRotateServicesInterval = setInterval(() => sbcMove(1), sbcAutoRotateTime);
                 }
             }
             
-            sbcSetupCarousel(); // Configuração inicial
+            sbcSetupCarousel(); 
             window.addEventListener('resize', sbcSetupCarousel);
-            startSbcAutoRotate(); // Inicia rotação automática para serviços
+            startSbcAutoRotate(); 
 
             let sbcTouchStartX = 0, sbcTouchStartY = 0;
-            if (servicosViewport && totalOriginalServicos > sbcItemsPerPage) {
+            // Permite swipe se houver mais itens que o visível OU se for mobile e houver mais de 1 item
+             let canSwipe = totalOriginalServicos > sbcItemsPerPage;
+             if (window.innerWidth <= 768 && totalOriginalServicos > 1) { // Mobile específico
+                canSwipe = true;
+            }
+
+            if (servicosViewport && canSwipe) {
                 servicosViewport.addEventListener('touchstart', function(event) {
                     sbcTouchStartX = event.touches[0].clientX;
                     sbcTouchStartY = event.touches[0].clientY;
-                    clearInterval(sbcAutoRotateServicesInterval); // Pausa ao tocar
+                    clearInterval(sbcAutoRotateServicesInterval); 
                 }, { passive: true });
 
                 servicosViewport.addEventListener('touchend', function(event) {
@@ -319,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         else { sbcMove(-1); }
                     }
                     sbcTouchStartX = 0; sbcTouchStartY = 0;
-                    startSbcAutoRotate(); // Reinicia após o swipe
+                    startSbcAutoRotate(); 
                 }, { passive: true });
             }
         }
