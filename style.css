@@ -289,15 +289,20 @@ body {
         align-items: center;
         gap: 25px;
     }
-    .sobre-coluna-imagem {
+    .sobre-coluna-imagem { /* MODIFICADO: max-width reduzido */
         order: 0;
         width: 100%;
-        max-width: 350px;
+        max-width: 300px; /* Reduzido de 350px para diminuir a imagem */
         display: flex;
         justify-content: center;
+        margin-bottom: 20px; /* Adicionado na modificação anterior para dar espaço */
     }
      .sobre-imagem-ilustrativa { /* Mobile */
-        max-width: 100%;
+        width: 100%; /* Para preencher o .sobre-coluna-imagem */
+        height: auto; /* Para manter proporção */
+        max-width: 100%; /* Garante que não exceda a coluna */
+        object-fit: contain; /* Adicionado na modificação anterior */
+        border-radius: 8px; /* Do seu original */
     }
     .sobre-coluna-texto {
         order: 1;
@@ -320,28 +325,27 @@ body {
 
     /* --- INÍCIO DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
     .servicos-section { /* Mobile: Fundo azul ocupa TODA A LARGURA DA TELA */
-        width: 100%; /* SOBRESCREVE o width: 90% que estava aqui no seu CSS original para mobile */
-        padding: 20px 0 25px 0; /* Mantém padding vertical do seu original para mobile */
-        margin: 20px 0 25px 0;  /* Remove margens laterais automáticas para ser 100% de largura */
-        /* background-color, color, box-sizing herdados da base */
+        width: 100%; 
+        padding: 20px 0 25px 0; 
+        margin: 20px 0 25px 0;  
     }
     .servicos-section > .container.servicos-container-conteudo { /* Mobile: Conteúdo do carrossel */
-        width: 70%; /* LARGURA DO CONTAINER INTERNO DO CONTEÚDO. (Ex: 70% da tela, era 100% de um pai de 90%) */
-        margin: 0 auto; /* Centraliza este container de conteúdo */
-        padding: 0 10px; /* Mantém padding interno do seu original para mobile */
-        /* max-width: none; e box-sizing herdados */
+        width: 70%; 
+        margin: 0 auto; 
+        padding: 0 10px; 
+        box-sizing: border-box; /* MODIFICADO: Adicionado para consistência no cálculo da largura */
     }
-    /* O JavaScript modificado na resposta anterior (sbcItemWidth = usableWidthForCarouselItems * 0.80;)
-       fará com que cada item do carrossel ocupe 80% da largura deste container de 70% (ou seja, 56% da tela),
-       e o viewport do carrossel (.servicos-box-carousel-container) será centralizado dentro deste container.
-       Isso deve atender ao visual das "linhas verdes".
+    /* O JavaScript modificado fará com que cada item do carrossel e o viewport
+       tenham a mesma largura, calculada como 85% da largura deste container de 70%.
+       O viewport (.servicos-box-carousel-container) será centralizado dentro deste container.
+       O overflow:hidden no viewport deve impedir filetes do próximo item.
     */
     /* --- FIM DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
 
     .servico-box-imagem { height: 140px; }
     .servico-box-conteudo h3 { font-size: 1em; }
     .servico-box-conteudo p { font-size: 0.8em; }
-    .servicos-carousel-indicators { padding-top: 20px; } /* Já centralizado por flex na base */
+    .servicos-carousel-indicators { padding-top: 20px; } 
     .sbc-indicator-item { width: 30px; height: 3px; }
     .service-modal-content { max-width: 90%; padding: 20px; }
     .service-modal-content h3 { font-size: 1.3em; }

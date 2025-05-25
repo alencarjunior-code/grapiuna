@@ -98,33 +98,36 @@ document.addEventListener('DOMContentLoaded', function() {
             let sbcClonesCount = 0;
             let sbcIsTransitioning = false;
             let sbcAutoRotateServicesInterval;
-            const sbcAutoRotateTime = 6000; // Intervalo para carrossel de serviços
+            const sbcAutoRotateTime = 6000; 
 
             function sbcSetupCarousel() {
-                // Pausa autorotate durante o setup para evitar conflitos
                 clearInterval(sbcAutoRotateServicesInterval);
 
                 totalOriginalServicos = servicosWrapper.querySelectorAll('.servico-box:not(.clone)').length;
-                if (totalOriginalServicos === 0) { // Se por algum motivo os originais sumiram, pega todos
+                if (totalOriginalServicos === 0) { 
                     servicoBoxesOriginal = Array.from(servicosWrapper.querySelectorAll('.servico-box'));
                     totalOriginalServicos = servicoBoxesOriginal.length;
                 }
-
 
                 const viewportParentWidth = servicosViewport.parentElement.offsetWidth; 
                 let carouselViewportWidthToSet = viewportParentWidth;
 
                 if (window.innerWidth <= 768) { 
                     sbcItemsPerPage = 1;
-                    sbcItemMargin = 15;
-                    sbcItemWidth = viewportParentWidth * 0.85; 
-                    carouselViewportWidthToSet = sbcItemWidth;
-                    servicosViewport.style.margin = '0 auto';
+                    sbcItemMargin = 15; // Margem entre itens (importante para cálculo de translateX)
+                    // viewportParentWidth é a largura do .servicos-container-conteudo (que tem width: 70% e padding: 0 10px e box-sizing: border-box)
+                    // sbcItemWidth será 85% desta largura, arredondado para baixo.
+                    sbcItemWidth = Math.floor(viewportParentWidth * 0.85); // MODIFICADO: Usando Math.floor()
+                    carouselViewportWidthToSet = sbcItemWidth; // Viewport terá exatamente a largura do item
+                    servicosViewport.style.width = `${carouselViewportWidthToSet}px`; // Define a largura do viewport
+                    servicosViewport.style.margin = '0 auto'; // Centraliza o viewport dentro do .servicos-container-conteudo
                 } else if (window.innerWidth <= 992) { 
                     sbcItemsPerPage = 2;
                     sbcItemMargin = 20;
-                    sbcItemWidth = (viewportParentWidth - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
-                    carouselViewportWidthToSet = viewportParentWidth;
+                    // viewportParentWidth é a largura do .servicos-container-conteudo (que tem padding e box-sizing: border-box)
+                    sbcItemWidth = Math.floor((viewportParentWidth - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage);
+                    carouselViewportWidthToSet = viewportParentWidth; // Viewport ocupa toda a largura do container pai
+                    servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
                     servicosViewport.style.margin = '0 auto';
                 } else { 
                     sbcItemsPerPage = 3;
@@ -138,17 +141,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     carouselViewportWidthToSet = referenceWidth;
                     servicosViewport.style.width = `${carouselViewportWidthToSet}px`;
                     servicosViewport.style.margin = '0 auto';
-                    sbcItemWidth = (carouselViewportWidthToSet - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage;
+                    sbcItemWidth = Math.floor((carouselViewportWidthToSet - sbcItemMargin * (sbcItemsPerPage - 1)) / sbcItemsPerPage);
                 }
 
-                // Limpa o wrapper e recria os itens originais para evitar duplicatas de clones
                 servicosWrapper.innerHTML = '';
                 servicoBoxesOriginal.forEach(boxOriginalHTML => {
-                    // Re-cria o elemento para garantir que não é um clone de uma iteração anterior
                     const newBox = document.createElement('div');
                     newBox.classList.add('servico-box');
-                    newBox.innerHTML = boxOriginalHTML.innerHTML; // Copia conteúdo interno
-                    // Copia data attributes
+                    newBox.innerHTML = boxOriginalHTML.innerHTML; 
                     for (const attr of boxOriginalHTML.attributes) {
                         if (attr.name.startsWith('data-')) {
                             newBox.setAttribute(attr.name, attr.value);
@@ -161,14 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 sbcClonesCount = 0;
                 if (totalOriginalServicos > sbcItemsPerPage && totalOriginalServicos > 1) {
-                    sbcClonesCount = sbcItemsPerPage; // Número de clones em cada extremidade
-                    // Clonar para o final
+                    sbcClonesCount = sbcItemsPerPage; 
                     for (let i = 0; i < sbcClonesCount; i++) {
                         const originalBox = servicoBoxesOriginal[i % totalOriginalServicos];
                         const cloneEnd = originalBox.cloneNode(true);
                         servicosWrapper.appendChild(cloneEnd);
                     }
-                    // Clonar para o início
                     for (let i = 0; i < sbcClonesCount; i++) {
                         const originalBox = servicoBoxesOriginal[(totalOriginalServicos - sbcClonesCount + i + totalOriginalServicos) % totalOriginalServicos];
                         const cloneStart = originalBox.cloneNode(true);
@@ -177,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     sbcCurrentActualIndex = sbcClonesCount + sbcCurrentLogicalIndex;
                 } else {
                     sbcCurrentActualIndex = sbcCurrentLogicalIndex;
-                    if (totalOriginalServicos > 0) {
+                    if (totalOriginalServicos > 0 && totalOriginalServicos <= sbcItemsPerPage) { // Ajuste para centralizar se poucos itens
                          servicosWrapper.style.justifyContent = 'center';
                     } else {
                          servicosWrapper.style.justifyContent = 'flex-start';
@@ -193,9 +191,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 if (allBoxesNow.length > 0) {
-                    const totalWrapperWidth = allBoxesNow.length * sbcItemWidth + (allBoxesNow.length) * sbcItemMargin;
-                    servicosWrapper.style.width = `${totalWrapperWidth - sbcItemMargin}px`;
-                    allBoxesNow[allBoxesNow.length-1].style.marginRight = '0px';
+                    // Largura total considera a margem de todos os itens, exceto o último virtualmente (o translate cuida disso)
+                    const totalWrapperWidth = allBoxesNow.length * (sbcItemWidth + sbcItemMargin); 
+                    servicosWrapper.style.width = `${totalWrapperWidth}px`; 
+                    // A remoção da margem do último item é complicada com clones e loop infinito.
+                    // É melhor garantir que o cálculo do translateX e a largura do wrapper estejam corretos.
+                    // A lógica original `allBoxesNow[allBoxesNow.length-1].style.marginRight = '0px';` e 
+                    // `totalWrapperWidth - sbcItemMargin` pode ser menos robusta com clones.
+                    // A soma `allBoxesNow.length * (sbcItemWidth + sbcItemMargin)` para o wrapper e o translateX 
+                    // devem funcionar consistentemente com o `overflow: hidden` do viewport.
                 }
 
                 servicosWrapper.style.transition = 'none';
@@ -207,16 +211,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 50);
 
                 sbcCreateIndicators();
-                startSbcAutoRotate(); // Inicia ou reinicia o autorotate
+                startSbcAutoRotate(); 
             }
 
             function sbcCreateIndicators() {
                 if (!servicosIndicatorsContainer) return;
                 servicosIndicatorsContainer.innerHTML = '';
                 
-                const numIndicatorDots = totalOriginalServicos; // Um indicador por item original
+                const numIndicatorDots = totalOriginalServicos; 
 
-                if (numIndicatorDots <= 1 || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) {
+                let hideIndicators = (numIndicatorDots <= 1);
+                // Para mobile (sbcItemsPerPage é 1), esconde se <= 1.
+                // Para tablet/desktop, esconde se itens originais <= itens por página.
+                if (window.innerWidth > 768 && totalOriginalServicos <= sbcItemsPerPage) {
+                    hideIndicators = true;
+                }
+                
+                if (hideIndicators) {
                     servicosIndicatorsContainer.classList.add('hidden'); return;
                 }
                 servicosIndicatorsContainer.classList.remove('hidden');
@@ -229,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.setAttribute('aria-label', `Ir para serviço ${i + 1}`);
                     button.addEventListener('click', function() { 
                         sbcGoToLogical(parseInt(this.dataset.sbcSlideTo)); 
-                        startSbcAutoRotate(); // Reinicia timer no clique do indicador
+                        startSbcAutoRotate(); 
                     });
                     servicosIndicatorsContainer.appendChild(button);
                 }
@@ -244,18 +255,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             function sbcGoToLogical(logicalIndex, withTransition = true) {
-                if (sbcIsTransitioning && withTransition && totalOriginalServicos > sbcItemsPerPage) return;
-                
+                let canInteract = totalOriginalServicos > sbcItemsPerPage || (window.innerWidth <= 768 && totalOriginalServicos > 1);
+                if ((sbcIsTransitioning && withTransition && canInteract) || !canInteract && totalOriginalServicos > 0 ) { // Se não puder interagir mas tiver itens, não faz nada
+                    if(!canInteract && totalOriginalServicos > 0) return; // Impede transição se não há para onde ir
+                    if(sbcIsTransitioning && withTransition && canInteract) return; // Impede transição durante outra
+                 }
+
                 sbcCurrentLogicalIndex = (logicalIndex + totalOriginalServicos) % totalOriginalServicos;
                 
-                if (withTransition && totalOriginalServicos > sbcItemsPerPage) sbcIsTransitioning = true;
-                sbcCurrentActualIndex = (totalOriginalServicos > sbcItemsPerPage) ? sbcClonesCount + sbcCurrentLogicalIndex : sbcCurrentLogicalIndex;
+                if (withTransition && canInteract) sbcIsTransitioning = true;
+                sbcCurrentActualIndex = (canInteract && totalOriginalServicos > 1) ? sbcClonesCount + sbcCurrentLogicalIndex : sbcCurrentLogicalIndex;
 
-                servicosWrapper.style.transition = (withTransition && totalOriginalServicos > sbcItemsPerPage) ? 'transform 0.5s ease-in-out' : 'none';
+
+                servicosWrapper.style.transition = (withTransition && canInteract && totalOriginalServicos > 1) ? 'transform 0.5s ease-in-out' : 'none';
                 servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
                 sbcUpdateIndicators();
 
-                if (withTransition && totalOriginalServicos > sbcItemsPerPage) {
+                if (withTransition && canInteract && totalOriginalServicos > 1) {
                     servicosWrapper.addEventListener('transitionend', sbcHandleLoopJump, { once: true });
                 } else {
                     sbcIsTransitioning = false;
@@ -266,43 +282,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 sbcIsTransitioning = false;
                 const N = totalOriginalServicos;
                 const C = sbcClonesCount;
+                let canLoop = totalOriginalServicos > sbcItemsPerPage || (window.innerWidth <= 768 && totalOriginalServicos > 1);
 
-                if (sbcCurrentActualIndex < C) { 
-                    sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N; 
-                    sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
-                    servicosWrapper.style.transition = 'none';
-                    servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
-                } else if (sbcCurrentActualIndex >= C + N) { 
-                    sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N;
-                    sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
-                    servicosWrapper.style.transition = 'none';
-                    servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+
+                if (canLoop && totalOriginalServicos > 1) { // Só faz o salto se o loop estiver ativo
+                    if (sbcCurrentActualIndex < C) { 
+                        sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N; 
+                        sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
+                        servicosWrapper.style.transition = 'none';
+                        servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+                    } else if (sbcCurrentActualIndex >= C + N) { 
+                        sbcCurrentLogicalIndex = (sbcCurrentLogicalIndex % N + N) % N;
+                        sbcCurrentActualIndex = C + sbcCurrentLogicalIndex;
+                        servicosWrapper.style.transition = 'none';
+                        servicosWrapper.style.transform = `translateX(-${sbcCurrentActualIndex * (sbcItemWidth + sbcItemMargin)}px)`;
+                    }
                 }
                  sbcUpdateIndicators();
             }
 
             function sbcMove(direction) {
-                if (sbcIsTransitioning || (totalOriginalServicos <= sbcItemsPerPage && window.innerWidth > 992) ) return;
+                let canMove = totalOriginalServicos > sbcItemsPerPage || (window.innerWidth <= 768 && totalOriginalServicos > 1);
+                if (sbcIsTransitioning || !canMove) return;
                 sbcGoToLogical(sbcCurrentLogicalIndex + direction);
             }
 
             function startSbcAutoRotate() {
                 clearInterval(sbcAutoRotateServicesInterval);
-                if (totalOriginalServicos > sbcItemsPerPage) { // Só rotaciona se houver mais itens do que o visível
+                let canAutoRotate = totalOriginalServicos > sbcItemsPerPage || (window.innerWidth <= 768 && totalOriginalServicos > 1);
+                if (canAutoRotate) { 
                     sbcAutoRotateServicesInterval = setInterval(() => sbcMove(1), sbcAutoRotateTime);
                 }
             }
             
-            sbcSetupCarousel(); // Configuração inicial
+            sbcSetupCarousel(); 
             window.addEventListener('resize', sbcSetupCarousel);
-            startSbcAutoRotate(); // Inicia rotação automática para serviços
+            // startSbcAutoRotate(); // Já é chamado dentro do sbcSetupCarousel
 
             let sbcTouchStartX = 0, sbcTouchStartY = 0;
-            if (servicosViewport && totalOriginalServicos > sbcItemsPerPage) {
+            // Verifica se pode haver swipe
+            let canSwipeServices = totalOriginalServicos > sbcItemsPerPage || (window.innerWidth <= 768 && totalOriginalServicos > 1);
+
+            if (servicosViewport && canSwipeServices) {
                 servicosViewport.addEventListener('touchstart', function(event) {
                     sbcTouchStartX = event.touches[0].clientX;
                     sbcTouchStartY = event.touches[0].clientY;
-                    clearInterval(sbcAutoRotateServicesInterval); // Pausa ao tocar
+                    clearInterval(sbcAutoRotateServicesInterval); 
                 }, { passive: true });
 
                 servicosViewport.addEventListener('touchend', function(event) {
@@ -319,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         else { sbcMove(-1); }
                     }
                     sbcTouchStartX = 0; sbcTouchStartY = 0;
-                    startSbcAutoRotate(); // Reinicia após o swipe
+                    startSbcAutoRotate(); 
                 }, { passive: true });
             }
         }
