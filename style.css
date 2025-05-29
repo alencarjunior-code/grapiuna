@@ -36,7 +36,6 @@ body {
 .banner-section {
     width: 100%;
     position: relative;
-    /* margin-bottom: 25px; */
 }
 .banner-section > .container { position: relative; }
 .carousel-container { width: 100%; position: relative; overflow: hidden; }
@@ -91,7 +90,7 @@ body {
 .destaque-vermelho { color: #BD1622; font-weight: 700; }
 .sobre-logos-parceiros { display: flex; align-items: center; gap: 25px; flex-wrap: wrap; padding-top: 0; margin-top: 15px; }
 .logo-parceiro { width: auto; opacity: 0.75; vertical-align: middle; height: 50px; }
-.sobre-coluna-imagem { flex: 2; display: flex; align-items: flex-start; } /* Desktop: Imagem à direita, texto à esquerda */
+.sobre-coluna-imagem { flex: 2; display: flex; align-items: flex-start; }
 .sobre-imagem-ilustrativa {
     width: 100%;
     height: auto;
@@ -100,100 +99,89 @@ body {
     border-radius: 8px;
 }
 
-/* ===== ESTILOS PARA A SEÇÃO DE SERVIÇOS (Base/Desktop - COMO NO SEU ORIGINAL) ===== */
+/* ===== ESTILOS PARA A SEÇÃO DE SERVIÇOS (GRID ESTÁTICO) ===== */
 .servicos-section {
     background-color: #253064;
-    padding: 25px 0 30px 0;
+    padding: 40px 0 50px 0;
     color: #ffffff;
-    width: 80%; /* Largura do retângulo azul no desktop */
-    margin: 25px auto 30px auto; /* Centraliza o retângulo azul no desktop */
+    width: 100%;
     box-sizing: border-box;
-    border-radius: 0;
+    margin: 25px auto 30px auto;
 }
 
 .servicos-section > .container.servicos-container-conteudo {
-    width: 100%; /* Conteúdo preenche o .servicos-section (que é 80% da tela no desktop) */
-    max-width: none;
-    padding: 0 20px; /* Padding interno do conteúdo */
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 10px; 
     box-sizing: border-box;
 }
 
-.servicos-box-carousel-container { /* Viewport do carrossel */
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    /* margin: 0 auto; /* JS cuidará da centralização no mobile se necessário */
+.servicos-titulo-geral {
+    text-align: left; /* <--- MODIFICADO */
+    font-size: 1.7em;  /* <--- MODIFICADO (ajuste conforme preferência) */
+    font-weight: 700;
+    margin-bottom: 25px; /* Ajustado um pouco */
+    color: #ffffff;
 }
 
-.servicos-box-wrapper { /* Contêiner de todos os itens, se move com translateX */
-    display: flex;
-    /* A largura será definida pelo JS */
+.servicos-grid-static {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 
-.servico-box { /* Cada item individual do carrossel */
-    /* A largura (flex-basis) será definida pelo JS */
-    margin-right: 20px; /* Espaçamento entre os itens */
+.servico-card-static {
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
     cursor: pointer;
-    box-sizing: border-box;
+    transition: transform 0.3s ease;
 }
 
-.servico-box-imagem {
-    height: 170px;
+.servico-card-static:hover {
+    transform: translateY(-5px);
+}
+
+.servico-card-static-imagem {
+    height: 190px;
     overflow: hidden;
+    background-color: #ffffff;
 }
-.servico-box-imagem img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
+
+.servico-card-static-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
-.servico-box-conteudo {
+
+.servico-card-static-conteudo {
     background-color: #E94E1B;
     color: #ffffff;
-    padding: 15px;
+    padding: 20px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
-.servico-box-conteudo h3 {
-    font-size: 1.1em;
+
+.servico-card-static-conteudo h3 {
+    font-size: 1.15em;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 10px;
     line-height: 1.3;
 }
-.servico-box-conteudo p {
-    font-size: 0.85em;
+
+.servico-card-static-conteudo p {
+    font-size: 0.9em;
     line-height: 1.5;
     margin-bottom: 0;
     flex-grow: 1;
 }
-
-.servicos-carousel-indicators {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 30px;
-    gap: 8px;
-    position: relative;
-    z-index: 10;
-}
-.sbc-indicator-item {
-    width: 50px;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.35);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 2px;
-}
-.sbc-indicator-item:hover { background-color: rgba(255, 255, 255, 0.6); }
-.sbc-indicator-item.active { background-color: #FFFFFF; }
-.servicos-carousel-indicators.hidden { display: none !important; }
 
 /* Estilos do Modal de Serviço */
 .service-modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 20px; box-sizing: border-box; }
@@ -207,18 +195,30 @@ body {
 
 
 /* ----- RESPONSIVIDADE ----- */
-@media (min-width: 993px) { /* Desktop ajustes específicos, se houver além da base */
-    .sobre-empresa-section .sobre-container-desktop-ajustado { width: 55vw; max-width: 980px; }
+@media (min-width: 993px) { /* Desktop */
+    .sobre-empresa-section .sobre-container-desktop-ajustado {
+        width: 55vw;
+        max-width: 980px;
+    }
+    .servicos-section > .container.servicos-container-conteudo {
+        width: 55vw; 
+        max-width: 980px; 
+    }
 }
 
-@media (max-width: 992px) { /* Tablet - COMO NO SEU ORIGINAL */
+@media (max-width: 992px) { /* Tablet */
     .header-left { gap: 15px; }
     .logo img { height: 20px; }
     .contact-info, .whatsapp-link, .social-icons { font-size: 0.75em; }
     .contact-items-wrapper, .header-right, .social-icons { gap: 1em; }
     .carousel-indicators { left: 50%; transform: translateX(-50%); bottom: 15px; gap: 6px; }
     .indicator-item { width: 60px; }
-    .sobre-empresa-section .sobre-container-desktop-ajustado { width: 90%; max-width: 1200px; }
+
+    .sobre-empresa-section .sobre-container-desktop-ajustado {
+        width: 90%; 
+        max-width: 1200px;
+    }
+    
     .sobre-empresa-grid { gap: 25px; }
     .titulo-empresa-wrapper { margin-bottom: 15px; flex-direction: row; }
     .sobre-nome-empresa { font-size: 1.6em; }
@@ -227,18 +227,23 @@ body {
     .sobre-logos-parceiros { margin-top: 10px; }
     .logo-parceiro { height: 43px; }
 
-    .servicos-section { /* Tablet: Retângulo azul é 90% e centralizado */
-        width: 90%;
-        /* padding e margin vertical herdados da base, margin horizontal 'auto' herdada para centralizar a seção */
-        padding: 20px 0 25px 0; /* Mantido do seu original para tablet */
-        margin: 20px auto 25px auto; /* Mantido do seu original para tablet */
+    .servicos-grid-static {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
-    .servicos-section > .container.servicos-container-conteudo { /* Tablet: Conteúdo preenche o .servicos-section */
-        width: 100%;
-        padding: 0 15px; /* Mantido do seu original para tablet */
+    .servicos-section { 
+        width: 90%; 
+        padding: 30px 0 40px 0;
+        margin: 20px auto 25px auto; 
     }
-    .servico-box-imagem { height: 150px; }
-    .sbc-indicator-item { width: 40px; }
+    .servicos-section > .container.servicos-container-conteudo {
+        width: 100%; 
+        padding: 0 15px; 
+    }
+    .servicos-titulo-geral {
+        font-size: 1.6em; /* Ajuste para tablet */
+    }
+    .servico-card-static-imagem { height: 170px; }
 }
 
 @media (max-width: 768px) { /* Mobile */
@@ -260,93 +265,46 @@ body {
     .carousel-indicators { left: 50%; transform: translateX(-50%); right: auto; bottom: 10px; gap: 5px; }
     .indicator-item { width: 35px; height: 3px; }
 
-    /* Seção Sobre a Empresa Mobile (imagem centralizada entre nome e texto) */
-    .sobre-empresa-section {
-        padding: 20px 0px;
-    }
+    .sobre-empresa-section { padding: 20px 0px; }
     .sobre-empresa-section .sobre-container-desktop-ajustado {
-        width: 90%;
+        width: 90%; 
         max-width: 1200px;
     }
-    .titulo-empresa-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 8px;
-        margin-bottom: 15px;
-    }
-    .sobre-logo-titulo {
-        height: calc(2.5em * 1.3);
-        margin-bottom: 5px;
-    }
-    .sobre-nome-empresa {
-        font-size: 1.5em;
-    }
-    .sobre-empresa-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1px;
-    }
-    .sobre-coluna-imagem { /* MODIFICADO: max-width reduzido */
-        order: 0;
-        width: 100%;
-        max-width: 300px; /* Reduzido de 350px para diminuir a imagem */
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px; /* Adicionado na modificação anterior para dar espaço */
-    }
-     .sobre-imagem-ilustrativa { /* Mobile */
-        width: 100%; /* Para preencher o .sobre-coluna-imagem */
-        height: auto; /* Para manter proporção */
-        max-width: 70%; /* Garante que não exceda a coluna */
-        object-fit: contain; /* Adicionado na modificação anterior */
-        border-radius: 8px; /* Do seu original */
-    }
-    .sobre-coluna-texto {
-        order: 1;
-        width: 100%;
-    }
-    .sobre-texto-descricao {
-        font-size: 0.9em;
-        text-align: left;
-        margin-bottom: 10px;
-    }
-    .sobre-logos-parceiros {
-        justify-content: center;
-        gap: 20px;
-        padding-top: 0;
-        margin-top: 10px;
-    }
-    .logo-parceiro {
-        height: 40px;
-    }
+   
+    .titulo-empresa-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; margin-bottom: 15px; }
+    .sobre-logo-titulo { height: calc(2.5em * 1.3); margin-bottom: 5px; }
+    .sobre-nome-empresa { font-size: 1.5em; }
+    .sobre-empresa-grid { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+    .sobre-coluna-imagem { order: 0; width: 100%; max-width: 300px; display: flex; justify-content: center; margin-bottom: 10px; }
+    .sobre-imagem-ilustrativa { width: 100%; height: auto; max-width: 70%; object-fit: contain; border-radius: 8px; }
+    .sobre-coluna-texto { order: 1; width: 100%; }
+    .sobre-texto-descricao { font-size: 0.9em; text-align: left; margin-bottom: 10px; }
+    .sobre-logos-parceiros { justify-content: center; gap: 20px; padding-top: 0; margin-top: 10px; }
+    .logo-parceiro { height: 40px; }
 
-    /* --- INÍCIO DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
-    .servicos-section { /* Mobile: Fundo azul ocupa TODA A LARGURA DA TELA */
-        width: 100%; 
-        padding: 20px 0 25px 0; 
-        margin: 20px 0 25px 0;  
+    .servicos-grid-static {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
-    .servicos-section > .container.servicos-container-conteudo { /* Mobile: Conteúdo do carrossel */
-        width: 70%; 
+    .servicos-section { 
+        width: 100%;
+        padding: 20px 0 25px 0;
+        margin: 20px 0 25px 0; 
+    }
+    .servicos-section > .container.servicos-container-conteudo {
+        width: 90%; 
         margin: 0 auto; 
         padding: 0 10px; 
-        box-sizing: border-box; /* MODIFICADO: Adicionado para consistência no cálculo da largura */
     }
-    /* O JavaScript modificado fará com que cada item do carrossel e o viewport
-       tenham a mesma largura, calculada como 85% da largura deste container de 70%.
-       O viewport (.servicos-box-carousel-container) será centralizado dentro deste container.
-       O overflow:hidden no viewport deve impedir filetes do próximo item.
-    */
-    /* --- FIM DOS AJUSTES EXCLUSIVOS MOBILE PARA SEÇÃO DE SERVIÇOS --- */
+    .servicos-titulo-geral {
+        font-size: 1.5em; /* Ajuste para mobile */
+        margin-bottom: 20px;
+    }
 
-    .servico-box-imagem { height: 140px; }
-    .servico-box-conteudo h3 { font-size: 1em; }
-    .servico-box-conteudo p { font-size: 0.8em; }
-    .servicos-carousel-indicators { padding-top: 20px; } 
-    .sbc-indicator-item { width: 30px; height: 3px; }
+    .servico-card-static-imagem { height: 160px; }
+    .servico-card-static-conteudo h3 { font-size: 1.1em; }
+    .servico-card-static-conteudo p { font-size: 0.85em; }
+
     .service-modal-content { max-width: 90%; padding: 20px; }
     .service-modal-content h3 { font-size: 1.3em; }
     .service-modal-content p { font-size: 0.9em; }
