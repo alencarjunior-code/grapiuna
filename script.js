@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // --- LÓGICA DO CARROSSEL DE BANNER (Mantida) ---
+    // --- LÓGICA DO CARROSSEL DE BANNER ---
     const bannerCarouselContainer = document.querySelector('.banner-section .carousel-container');
     const bannerSlides = document.querySelectorAll('.banner-section .carousel-slide');
     const bannerIndicators = document.querySelectorAll('.banner-section .indicator-item');
@@ -79,33 +79,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if(bannerIndicatorsContainer) bannerIndicatorsContainer.classList.add('hidden');
     }
 
-    // --- LÓGICA DO CARROSSEL DE SERVIÇOS (REMOVIDA) ---
-    // Todo o bloco de código referente ao carrossel de serviços foi removido daqui.
-
-    // --- LÓGICA DO MODAL DE SERVIÇO (AJUSTADA) ---
+    // --- LÓGICA DO MODAL (Reutilizado para Serviços e Produtos) ---
     const modalContainer = document.querySelector('.service-modal-container');
-    const servicosGridStatic = document.querySelector('.servicos-grid-static'); // Container dos cards de serviço estáticos
+    const servicosGridStatic = document.querySelector('.servicos-grid-static');
+    const produtosCarouselList = document.querySelector('.produtos-carousel'); // Usar .produtos-carousel para o listener do clique
 
-    if (servicosGridStatic && modalContainer) {
+    if (modalContainer) {
         const modalTitleEl = modalContainer.querySelector('#service-modal-title');
         const modalTextEl = modalContainer.querySelector('#service-modal-text');
         const modalCloseButton = modalContainer.querySelector('.modal-close-button');
 
         if (modalTitleEl && modalTextEl && modalCloseButton) {
-            servicosGridStatic.addEventListener('click', function(event) {
-                const clickedCard = event.target.closest('.servico-card-static'); // Procura pelo card clicado
-                if (clickedCard) {
-                    const title = clickedCard.dataset.serviceTitle || "Detalhes do Serviço";
-                    let textData = clickedCard.dataset.serviceText || "Informação detalhada não disponível.|Por favor, entre em contato para mais informações.";
-                    const paragraphs = textData.split('|').map(pText => `<p>${pText.trim()}</p>`).join('');
+            function openModalWithContent(title, textData) {
+                const paragraphs = textData.split('|').map(pText => `<p>${pText.trim()}</p>`).join('');
+                modalTitleEl.textContent = title;
+                modalTextEl.innerHTML = paragraphs;
+                modalContainer.classList.add('active');
+            }
 
-                    modalTitleEl.textContent = title;
-                    modalTextEl.innerHTML = paragraphs;
-                    modalContainer.classList.add('active');
-                }
-            });
-
-            // Evento para fechar o modal no botão
             if (!modalCloseButton.dataset.listenerAttached) {
                 modalCloseButton.addEventListener('click', () => {
                     modalContainer.classList.remove('active');
@@ -113,14 +104,188 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalCloseButton.dataset.listenerAttached = 'true';
             }
 
-            // Evento para fechar o modal clicando fora do conteúdo
             if (!modalContainer.dataset.listenerAttached) {
                  modalContainer.addEventListener('click', (e) => {
-                    if (e.target === modalContainer) { // Verifica se o clique foi no próprio container do modal (fundo)
+                    if (e.target === modalContainer) {
                         modalContainer.classList.remove('active');
                     }
                 });
                 modalContainer.dataset.listenerAttached = 'true';
+            }
+
+            if (servicosGridStatic) {
+                servicosGridStatic.addEventListener('click', function(event) {
+                    const clickedCard = event.target.closest('.servico-card-static');
+                    if (clickedCard) {
+                        const title = clickedCard.dataset.serviceTitle || "Detalhes do Serviço";
+                        const textData = clickedCard.dataset.serviceText || "Informação detalhada não disponível.|Por favor, entre em contato para mais informações.";
+                        openModalWithContent(title, textData);
+                    }
+                });
+            }
+
+            if (produtosCarouselList) { // Listener nos produtos
+                produtosCarouselList.addEventListener('click', function(event) {
+                    const clickedProduto = event.target.closest('.produto-item');
+                    if (clickedProduto) {
+                        const title = clickedProduto.dataset.produtoTitle || "Detalhes do Produto";
+                        const textData = clickedProduto.dataset.produtoText || "Descrição detalhada não disponível.|Consulte-nos para mais informações.";
+                        openModalWithContent(title, textData);
+                    }
+                });
+            }
+        }
+    }
+
+    // --- LÓGICA DO CARROSSEL DE PRODUTOS ---
+    const produtosCarouselJS = document.querySelector('.produtos-carousel'); // Referência correta para o elemento que se move
+    const prevButtonProdutos = document.querySelector('.produto-carousel-btn.prev');
+    const nextButtonProdutos = document.querySelector('.produto-carousel-btn.next');
+
+    if (produtosCarouselJS && prevButtonProdutos && nextButtonProdutos) {
+        const produtoItemsAll = document.querySelectorAll('.produto-item');
+        const totalProdutoItems = produtoItemsAll.length;
+        
+        let itemsPerPageProdutos;
+        let currentProdutoItemIndex = 0; // Índice do primeiro item visível à esquerda
+        let numDistinctPositions; // Número de "slides" ou posições distintas possíveis
+
+        let produtosAutoRotateInterval;
+        const produtosSlideIntervalTime = 5000;
+
+        function setupProdutoCarousel() {
+            if (window.innerWidth <= 768) { 
+                itemsPerPageProdutos = 2;
+            } else if (window.innerWidth <= 992) { 
+                itemsPerPageProdutos = 3;
+            } else { 
+                itemsPerPageProdutos = 4;
+            }
+
+            if (totalProdutoItems === 0) {
+                numDistinctPositions = 0;
+            } else if (totalProdutoItems <= itemsPerPageProdutos) {
+                numDistinctPositions = 1; // Todos os itens cabem, sem slide efetivo
+            } else {
+                numDistinctPositions = totalProdutoItems - itemsPerPageProdutos + 1;
+            }
+            
+            if (numDistinctPositions === 0 || (numDistinctPositions === 1 && totalProdutoItems <= itemsPerPageProdutos)) {
+                currentProdutoItemIndex = 0; 
+            } else {
+                currentProdutoItemIndex = Math.min(currentProdutoItemIndex, numDistinctPositions - 1);
+                currentProdutoItemIndex = Math.max(0, currentProdutoItemIndex);
+            }
+            
+            updateProdutoCarouselView();
+            startProdutosAutoRotate();
+        }
+
+        function updateProdutoCarouselView() {
+            if (totalProdutoItems === 0) {
+                produtosCarouselJS.style.transform = `translateX(0%)`;
+                if (prevButtonProdutos) prevButtonProdutos.style.display = 'none';
+                if (nextButtonProdutos) nextButtonProdutos.style.display = 'none';
+                return;
+            }
+
+            if (numDistinctPositions > 1) { // Mostra botões apenas se houver para onde deslizar
+                if (prevButtonProdutos) prevButtonProdutos.style.display = 'block';
+                if (nextButtonProdutos) nextButtonProdutos.style.display = 'block';
+            } else {
+                if (prevButtonProdutos) prevButtonProdutos.style.display = 'none';
+                if (nextButtonProdutos) nextButtonProdutos.style.display = 'none';
+            }
+
+            const itemWidthPercentage = 100 / itemsPerPageProdutos;
+            const translateXValue = -currentProdutoItemIndex * itemWidthPercentage;
+            produtosCarouselJS.style.transform = `translateX(${translateXValue}%)`;
+        }
+
+        function moveToNextProdutoItem() {
+            if (numDistinctPositions <= 1) return;
+
+            currentProdutoItemIndex++;
+            if (currentProdutoItemIndex >= numDistinctPositions) {
+                currentProdutoItemIndex = 0; 
+            }
+            updateProdutoCarouselView();
+        }
+
+        function moveToPrevProdutoItem() {
+            if (numDistinctPositions <= 1) return; 
+
+            currentProdutoItemIndex--;
+            if (currentProdutoItemIndex < 0) {
+                currentProdutoItemIndex = numDistinctPositions - 1; 
+            }
+            updateProdutoCarouselView();
+        }
+
+        function startProdutosAutoRotate() {
+            clearInterval(produtosAutoRotateInterval);
+            if (numDistinctPositions > 1) { 
+                produtosAutoRotateInterval = setInterval(moveToNextProdutoItem, produtosSlideIntervalTime);
+            }
+        }
+
+        nextButtonProdutos.addEventListener('click', () => {
+            moveToNextProdutoItem();
+            startProdutosAutoRotate(); 
+        });
+
+        prevButtonProdutos.addEventListener('click', () => {
+            moveToPrevProdutoItem();
+            startProdutosAutoRotate(); 
+        });
+
+        setupProdutoCarousel();
+        window.addEventListener('resize', setupProdutoCarousel);
+
+        const produtosCarouselWrapper = document.querySelector('.produtos-carousel-wrapper');
+        if (produtosCarouselWrapper) {
+            produtosCarouselWrapper.addEventListener('mouseenter', () => {
+                clearInterval(produtosAutoRotateInterval);
+            });
+            produtosCarouselWrapper.addEventListener('mouseleave', () => {
+                startProdutosAutoRotate();
+            });
+        }
+
+    } else {
+        if (prevButtonProdutos) prevButtonProdutos.style.display = 'none';
+        if (nextButtonProdutos) nextButtonProdutos.style.display = 'none';
+    }
+
+    // --- LÓGICA PARA ABAS DA SEÇÃO INFORMAÇÕES TÉCNICAS ---
+    const infoTabsNav = document.querySelector('.info-tabs-nav');
+    if (infoTabsNav) {
+        const infoTabButtons = infoTabsNav.querySelectorAll('.info-tab-btn');
+        const infoTabContents = document.querySelectorAll('.info-tab-content');
+
+        function showInfoTab(tabId) {
+            infoTabContents.forEach(content => {
+                content.classList.toggle('active', content.id === tabId);
+            });
+            infoTabButtons.forEach(button => {
+                button.classList.toggle('active', ('tab-' + button.dataset.tab) === tabId);
+            });
+        }
+
+        infoTabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetTabId = 'tab-' + this.dataset.tab;
+                showInfoTab(targetTabId);
+            });
+        });
+
+        const activeTabButton = infoTabsNav.querySelector('.info-tab-btn.active');
+        if (activeTabButton) {
+            showInfoTab('tab-' + activeTabButton.dataset.tab);
+        } else if (infoTabButtons.length > 0) {
+            infoTabButtons[0].classList.add('active');
+            if (infoTabContents.length > 0) { // Garante que há conteúdo para ativar
+                 infoTabContents[0].classList.add('active');
             }
         }
     }

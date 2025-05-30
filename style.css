@@ -3,7 +3,7 @@ body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    background-color: #ffffff;
+    background-color: #ffffff; /* Fundo da página principal é branco */
 }
 
 .container {
@@ -31,6 +31,10 @@ body {
 .contact-icon, .button-icon, .social-icon-svg { height: 1.6em; width: auto; vertical-align: middle; }
 .social-icon-svg { opacity: 0.9; transition: opacity 0.3s ease; }
 .social-icons a:hover .social-icon-svg { opacity: 1; }
+
+.whatsapp-servicos-maior {
+    font-size: 1.1em;
+}
 
 /* Estilos do Banner Rotativo */
 .banner-section {
@@ -110,18 +114,18 @@ body {
 }
 
 .servicos-section > .container.servicos-container-conteudo {
-    width: 90%; 
-    max-width: 1200px; 
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 10px; 
+    padding: 0 10px;
     box-sizing: border-box;
 }
 
 .servicos-titulo-geral {
-    text-align: left; /* <--- MODIFICADO */
-    font-size: 1.7em;  /* <--- MODIFICADO (ajuste conforme preferência) */
+    text-align: left;
+    font-size: 1.7em;
     font-weight: 700;
-    margin-bottom: 25px; /* Ajustado um pouco */
+    margin-bottom: 25px;
     color: #ffffff;
 }
 
@@ -183,7 +187,234 @@ body {
     flex-grow: 1;
 }
 
-/* Estilos do Modal de Serviço */
+.fale-com-a-gente-wrapper {
+    text-align: center;
+    margin-top: 40px;
+    padding-bottom: 10px;
+}
+
+/* ===== ESTILOS PARA A SEÇÃO DE PRODUTOS ===== */
+.produtos-section {
+    background-color: #ffffff; /* Fundo branco para a seção de produtos */
+    padding: 20px 0 30px 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 30px auto; 
+}
+
+.produtos-section > .container.produtos-container-conteudo {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.produtos-titulo-geral {
+    text-align: left;
+    font-size: 1.7em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #E94E1B; 
+}
+
+.produtos-carousel-wrapper {
+    position: relative;
+    padding-left: 40px; 
+    padding-right: 40px; 
+    margin-left: -40px; 
+    margin-right: -40px; 
+}
+
+.produtos-carousel-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.produtos-carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.produto-item {
+    flex: 0 0 25%; 
+    box-sizing: border-box;
+    padding: 0 10px; 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer; 
+}
+
+.produto-imagem {
+    width: 100%;
+    max-width: 180px; 
+    height: 180px;    
+    object-fit: contain; 
+    margin-bottom: 15px;
+    /* border: 1px solid #eee; */ /* Borda removida */
+    border-radius: 4px;
+}
+
+.produto-nome {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+    min-height: 2.4em; 
+}
+
+.produto-descricao {
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.4;
+    min-height: 3.8em; 
+}
+
+.produto-carousel-btn {
+    position: absolute;
+    top: 40%; 
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    font-size: 2em; 
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.produto-carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.produto-carousel-btn.prev {
+    left: 5px; 
+}
+
+.produto-carousel-btn.next {
+    right: 5px; 
+}
+
+/* ===== ESTILOS PARA A SEÇÃO INFORMAÇÕES TÉCNICAS ===== */
+.informacoes-tecnicas-section {
+    background-color: #f0f0f0; /* FUNDO CINZA PARA A FAIXA INTEIRA DA SEÇÃO */
+    padding: 40px 0; /* Padding vertical para a faixa cinza */
+    margin-bottom: 30px;
+    width: 100%; /* Garante que ocupe toda a largura */
+    box-sizing: border-box;
+}
+
+/* O container interno mantém o conteúdo centralizado */
+.informacoes-tecnicas-section > .container.informacoes-container-conteudo {
+    /* A largura deste container já é controlada pelas media queries globais */
+}
+
+.informacoes-titulo-geral {
+    display: flex;
+    align-items: center;
+    font-size: 1.7em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #E94E1B; 
+}
+
+.icone-titulo-info {
+    height: 1.2em; 
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle; 
+}
+
+.info-tabs-nav {
+    display: flex;
+    margin-bottom: 0; 
+    border-bottom: 2px solid #E94E1B; 
+}
+
+.info-tab-btn {
+    flex-grow: 1; 
+    padding: 12px 15px;
+    font-size: 0.95em;
+    font-weight: 500;
+    color: #333;
+    background-color: #e0e0e0; 
+    border: 1px solid #ccc;
+    border-bottom: none; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* ÍCONE E TEXTO DA ABA ALINHADOS À ESQUERDA */
+    gap: 8px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 2px; 
+}
+.info-tab-btn:last-child {
+    margin-right: 0;
+}
+
+.icone-tab-btn {
+    height: 1em; 
+    width: auto;
+}
+
+.info-tab-btn:hover {
+    background-color: #d5d5d5;
+}
+
+.info-tab-btn.active {
+    background-color: #E94E1B; 
+    color: white;
+    border-color: #E94E1B;
+    font-weight: 700;
+}
+
+.info-tabs-content-wrapper {
+    background-color: #f7f7f7; /* Cinza claro para a área de conteúdo das abas (pode ser #ffffff se preferir contraste com a seção) */
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-top: none; 
+    border-radius: 0 0 6px 6px; 
+}
+
+.info-tab-content {
+    display: none; 
+    max-height: 350px; 
+    overflow-y: auto; 
+    line-height: 1.6;
+    color: #444;
+    padding-right: 10px; 
+}
+
+.info-tab-content.active {
+    display: block; 
+}
+
+.info-tab-content h4 {
+    font-size: 1.2em;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+.info-tab-content p {
+    margin-bottom: 15px;
+}
+.info-tab-content ul {
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+.info-tab-content li {
+    margin-bottom: 8px;
+}
+
+
+/* Estilos do Modal (Reutilizado) */
 .service-modal-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 20px; box-sizing: border-box; }
 .service-modal-container.active { opacity: 1; visibility: visible; transition-delay: 0s; }
 .service-modal-content { background-color: #fff; color: #333; padding: 25px 30px; border-radius: 8px; max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
@@ -196,13 +427,12 @@ body {
 
 /* ----- RESPONSIVIDADE ----- */
 @media (min-width: 993px) { /* Desktop */
-    .sobre-empresa-section .sobre-container-desktop-ajustado {
+    .sobre-empresa-section .sobre-container-desktop-ajustado,
+    .servicos-section > .container.servicos-container-conteudo,
+    .produtos-section > .container.produtos-container-conteudo,
+    .informacoes-tecnicas-section > .container.informacoes-container-conteudo {
         width: 55vw;
         max-width: 980px;
-    }
-    .servicos-section > .container.servicos-container-conteudo {
-        width: 55vw; 
-        max-width: 980px; 
     }
 }
 
@@ -215,10 +445,33 @@ body {
     .indicator-item { width: 60px; }
 
     .sobre-empresa-section .sobre-container-desktop-ajustado {
-        width: 90%; 
+        width: 90%;
         max-width: 1200px;
     }
-    
+    .servicos-section,
+    .produtos-section,
+    .informacoes-tecnicas-section { /* A seção .informacoes-tecnicas-section já é full-width com background, o container interno é que se ajusta */
+        width: 100%; /* Seções ocupam 100% da largura para o fundo cinza */
+        /* Padding vertical já está na classe base, o container interno controla o padding horizontal do conteúdo */
+    }
+    /* O container interno das seções será 90% e centralizado */
+    .servicos-section > .container.servicos-container-conteudo,
+    .produtos-section > .container.produtos-container-conteudo,
+    .informacoes-tecnicas-section > .container.informacoes-container-conteudo {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px; /* Padding para o conteúdo dentro do container */
+        padding-right: 15px; /* Padding para o conteúdo dentro do container */
+    }
+    /* Ajustes específicos para o carrossel de produtos, considerando o padding do container pai */
+    .produtos-section .produtos-carousel-wrapper {
+        padding-left: 30px; 
+        padding-right: 30px;
+        margin-left: 0; /* Removido pois o container pai já tem padding */
+        margin-right: 0;/* Removido pois o container pai já tem padding */
+    }
+
     .sobre-empresa-grid { gap: 25px; }
     .titulo-empresa-wrapper { margin-bottom: 15px; flex-direction: row; }
     .sobre-nome-empresa { font-size: 1.6em; }
@@ -231,19 +484,32 @@ body {
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
-    .servicos-section { 
-        width: 90%; 
-        padding: 30px 0 40px 0;
-        margin: 20px auto 25px auto; 
-    }
-    .servicos-section > .container.servicos-container-conteudo {
-        width: 100%; 
-        padding: 0 15px; 
-    }
-    .servicos-titulo-geral {
-        font-size: 1.6em; /* Ajuste para tablet */
+    .servicos-titulo-geral,
+    .produtos-titulo-geral,
+    .informacoes-titulo-geral { 
+        font-size: 1.6em;
     }
     .servico-card-static-imagem { height: 170px; }
+
+    .produto-item {
+        flex: 0 0 33.33%;
+        padding: 0 8px;
+    }
+    .produto-imagem { max-width: 150px; height: 150px; }
+    .produto-carousel-btn.prev { left: 2px; }
+    .produto-carousel-btn.next { right: 2px; }
+
+    .info-tab-btn {
+        font-size: 0.9em;
+        padding: 10px 8px;
+        justify-content: flex-start; /* Garante alinhamento à esquerda no tablet também */
+    }
+    .info-tabs-content-wrapper {
+        padding: 20px;
+    }
+    .info-tab-content {
+        max-height: 320px;
+    }
 }
 
 @media (max-width: 768px) { /* Mobile */
@@ -266,11 +532,26 @@ body {
     .indicator-item { width: 35px; height: 3px; }
 
     .sobre-empresa-section { padding: 20px 0px; }
-    .sobre-empresa-section .sobre-container-desktop-ajustado {
-        width: 90%; 
-        max-width: 1200px;
+    
+    /* Container interno das seções em mobile */
+    .sobre-empresa-section > .container.sobre-container-desktop-ajustado,
+    .servicos-section > .container.servicos-container-conteudo,
+    .produtos-section > .container.produtos-container-conteudo,
+    .informacoes-tecnicas-section > .container.informacoes-container-conteudo {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 10px; 
+        padding-right: 10px;
     }
-   
+     /* Ajuste para o wrapper do carrossel de produtos em mobile */
+    .produtos-section .produtos-carousel-wrapper {
+        padding-left: 25px;
+        padding-right: 25px;
+        margin-left: 0; /* Removido pois o container pai já tem padding */
+        margin-right: 0;/* Removido pois o container pai já tem padding */
+    }
+
     .titulo-empresa-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; margin-bottom: 15px; }
     .sobre-logo-titulo { height: calc(2.5em * 1.3); margin-bottom: 5px; }
     .sobre-nome-empresa { font-size: 1.5em; }
@@ -286,24 +567,69 @@ body {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    .servicos-section { 
-        width: 100%;
-        padding: 20px 0 25px 0;
-        margin: 20px 0 25px 0; 
-    }
-    .servicos-section > .container.servicos-container-conteudo {
-        width: 90%; 
-        margin: 0 auto; 
-        padding: 0 10px; 
-    }
-    .servicos-titulo-geral {
-        font-size: 1.5em; /* Ajuste para mobile */
-        margin-bottom: 20px;
+    .servicos-section,
+    .produtos-section,
+    .informacoes-tecnicas-section { /* As seções continuam full-width para o background */
+        width: 100%; 
+        padding-top: 20px; /* Ajuste do padding vertical da seção */
+        padding-bottom: 25px;/* Ajuste do padding vertical da seção */
+        margin-top: 20px;
+        margin-bottom: 25px;
     }
 
+    .servicos-titulo-geral,
+    .produtos-titulo-geral,
+    .informacoes-titulo-geral { 
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
     .servico-card-static-imagem { height: 160px; }
     .servico-card-static-conteudo h3 { font-size: 1.1em; }
     .servico-card-static-conteudo p { font-size: 0.85em; }
+
+    .produto-item {
+        flex: 0 0 50%;
+        padding: 0 5px;
+    }
+    .produto-imagem { max-width: 120px; height: 120px; }
+    .produto-nome { font-size: 1em; min-height: 2.2em; }
+    .produto-descricao { font-size: 0.8em; min-height: 3.5em; }
+    
+    .produto-carousel-btn {
+        font-size: 1.5em;
+        padding: 4px 8px;
+        top: 35%;
+    }
+    .produto-carousel-btn.prev { left: 0px; }
+    .produto-carousel-btn.next { right: 0px; }
+
+    .informacoes-titulo-geral { 
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .info-tabs-nav {
+        flex-direction: column; 
+        border-bottom: none;
+    }
+    .info-tab-btn {
+        margin-right: 0;
+        margin-bottom: 2px; 
+        border-radius: 6px; 
+        border-bottom: 1px solid #ccc; 
+        justify-content: flex-start; 
+    }
+    .info-tab-btn.active {
+        border-color: #E94E1B; 
+    }
+    .info-tabs-content-wrapper {
+        border-radius: 6px; 
+        border-top: 1px solid #ddd; 
+        margin-top: 5px;
+    }
+    .info-tab-content {
+        max-height: 300px;
+    }
 
     .service-modal-content { max-width: 90%; padding: 20px; }
     .service-modal-content h3 { font-size: 1.3em; }
