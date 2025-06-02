@@ -84,7 +84,7 @@ body {
 .servico-card-static-conteudo h3 { font-size: 1.15em; font-weight: 700; margin-top: 0; margin-bottom: 10px; line-height: 1.3; }
 .servico-card-static-conteudo p { font-size: 0.9em; line-height: 1.5; margin-bottom: 0; flex-grow: 1; }
 .fale-com-a-gente-wrapper { text-align: center; margin-top: 40px; padding-bottom: 10px; }
-.btn-whatsapp-servicos { display: inline-flex; align-items: center; justify-content: center; background-color: none; color: white; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 1.1em; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+.btn-whatsapp-servicos { display: inline-flex; align-items: center; justify-content: center; background-color: none; color: white; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 1.1em; transition: background-color 0.3s ease, transform 0.2s ease; }
 .btn-whatsapp-servicos:hover { background-color: #009540; transform: translateY(-2px); }
 .btn-whatsapp-servicos:active { transform: translateY(0px); background-color: #007A40; }
 .whatsapp-btn-icon { height: 1.4em; width: auto; margin-right: 10px; }
@@ -330,9 +330,9 @@ body {
 
 .galeria-confianca-item img {
     width: 100%;
-    max-width: 800px;
+    max-width: 450px;
     height: auto;
-    max-height: 500px;
+    max-height: 300px;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -497,7 +497,7 @@ body {
 
 /* ===== ESTILOS PARA O RODAPÉ (FOOTER) ===== */
 .site-footer-main {
-    background-color: #4A4A4A; /* Cinza escuro do rodapé */
+    background-color: hsl(0, 0%, 29%); /* Cinza escuro do rodapé */
     color: #f0f0f0; /* Cor de texto clara padrão para o rodapé */
     padding: 40px 0 20px 0;
     font-size: 0.9em;
@@ -517,17 +517,23 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     flex-wrap: wrap; /* Para quebrar em telas menores */
-    gap: 30px; /* Espaço entre as colunas quando quebram */
+    gap: 220px; /* Espaço entre as colunas quando quebram */
     margin-bottom: 25px;
 }
 
 .footer-left-col {
     flex: 1; /* Permite que cresça */
     min-width: 280px; /* Largura mínima antes de quebrar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+
 }
 
 .footer-logo-main img {
-    max-width: 250px; /* Ajuste conforme o tamanho do seu logo completo */
+    max-width: 200px; /* Ajuste conforme o tamanho do seu logo completo */
     height: auto;
     margin-bottom: 20px;
 }
@@ -551,6 +557,15 @@ body {
     filter: brightness(0) invert(1) opacity(0.8); /* Para tornar logos coloridos/escuros em brancos/claros */
 }
 
+
+
+/* Nova regra para a imagem que deve manter a cor original */
+.footer-partner-logo-item.keep-color {
+    filter: none;  /* Remove qualquer filtro aplicado, exibindo a imagem original */
+    opacity: 1;    /* Garante opacidade total para a imagem colorida */
+}
+
+
 .footer-right-col {
     flex: 1.5; /* Permite que a coluna de contato seja um pouco maior */
     min-width: 280px; /* Largura mínima */
@@ -559,7 +574,7 @@ body {
 .footer-contact-item {
     display: flex;
     align-items: flex-start; /* Alinha ícone com início do texto (bom para múltiplas linhas) */
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     line-height: 1.5;
 }
 
@@ -568,13 +583,12 @@ body {
     height: 16px;
     margin-right: 12px;
     margin-top: 4px; /* Ajuste para alinhar verticalmente com o texto */
-    filter: brightness(0) invert(1); /* Garante que os ícones SVG sejam brancos */
 }
 
 .footer-divider {
     border: none;
     height: 1px;
-    background-color: #666666; /* Cor da linha divisória */
+    background-color: hsl(0, 0%, 40%); /* Cor da linha divisória */
     margin: 20px 0;
 }
 
