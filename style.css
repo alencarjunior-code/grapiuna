@@ -45,16 +45,52 @@ body {
     padding-left: 10%;
     padding-right: 10%;
     padding-top: 36px;
+    /* Adiciona padding-bottom para criar espaço para os indicadores abaixo da área da imagem */
+    padding-bottom: 20px; /* Ajuste conforme necessário */
+    position: relative; /* Garante que o posicionamento absoluto do filho seja relativo a este contêiner */
 }
-.carousel-container { width: 100%; position: certer; overflow: hidden; }
+.carousel-container { width: 100%; position: relative; overflow: hidden; }
 .carousel-slide { width: 100%; display: none; opacity: 0; transition: opacity 0.8s ease-in-out; }
 .carousel-slide.active { display: block; opacity: 1; }
 .carousel-slide img { display: block; width: 100%; height: auto; }
-.carousel-indicators { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 15; }
+.carousel-indicators {
+    position: absolute;
+    bottom: 0px; /* Ajustado para ficar fora da imagem se o contêiner tiver padding-bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 15;
+    background-color: rgba(0, 0, 0, 0.2); /* Adiciona um fundo sutil para visibilidade */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 .indicator-item { width: 70px; height: 4px; background-color: rgba(255, 255, 255, 0.35); border: none; padding: 0; cursor: pointer; transition: background-color 0.3s ease; border-radius: 2px; }
 .indicator-item:hover { background-color: rgba(255, 255, 255, 0.6); }
 .indicator-item.active { background-color: rgba(255, 255, 255, 0.95); }
-.carousel-indicators.hidden { display: none !important; }
+/* .carousel-indicators.hidden { display: none !important; } - Esta classe é tratada pelo JS, vamos também controlar com CSS para mobile */
+
+/* Media Query para Mobile para ocultar os indicadores do banner */
+@media (max-width: 768px) {
+    .banner-section > .container {
+        padding-bottom: 0; /* Remove o padding-bottom em mobile */
+    }
+    .carousel-indicators {
+        display: none !important; /* Oculta os indicadores em mobile */
+    }
+}
+
+/* Add or adjust these if they affect the banner area */
+@media (max-width: 992px) { /* Tablet */
+    .banner-section > .container {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 20px; /* Padding-top ajustado para telas menores */
+        padding-bottom: 20px; /* Mantém algum padding para os indicadores no tablet, se desejado, ou defina como 0 */
+    }
+    /* If you want to hide indicators on tablet as well, add the rule here */
+    /* .carousel-indicators { display: none !important; } */
+}
 
 /* Estilos da Seção "Sobre a Empresa" */
 .sobre-empresa-section { padding: 30px 0; background-color: #ffffff; }
@@ -907,7 +943,7 @@ body {
         display: block;
         width: 150%;
         height: auto;
-        position: relative; 
+        position: relative;
         left: 50%;
         transform: translateX(-50%);
     }
