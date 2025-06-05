@@ -716,6 +716,113 @@ body {
         padding-left: 10px;
         padding-right: 10px;
     }
+
+
+    @media (max-width: 992px) { /* Tablet */
+    /* ... Mantenha outros estilos existentes para tablet que NÃO sejam do header ... */
+    /* Exemplo: .container { padding-left: 10px; padding-right: 10px; } */
+
+    /* --- INÍCIO: ESTILOS DO HEADER PARA TABLET (IGUAL AO MOBILE) --- */
+
+    .site-header {
+        padding-top: 5px;    /* Ajuste de padding se necessário */
+        padding-bottom: 5px; /* Ajuste de padding se necessário */
+    }
+
+    .site-header .container.header-flex {
+        display: flex;           /* Garante que é um container flex */
+        align-items: center;     /* Alinha os itens verticalmente ao centro */
+        flex-wrap: nowrap;       /* IMPEDE a quebra de linha dos itens */
+        justify-content: flex-start; /* Alinha os itens ao início; o link do WhatsApp usará margin-left: auto */
+        width: 98%;             /* Garante que o flex container use toda a largura disponível no .container */
+        padding: 0;              /* Remove padding interno do .header-flex se houver */
+    }
+
+    /* Reseta os wrappers internos para não interferirem no layout flex do pai */
+    .header-left,
+    .header-left .contact-info,
+    .header-left .contact-info .contact-items-wrapper,
+    .header-right,
+    .header-right .social-icons {
+        display: contents; /* Faz com que os filhos destes elementos se comportem como filhos diretos do .header-flex */
+        /* Reset de propriedades que poderiam vir de estilos de tablet anteriores */
+        width: auto;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        gap: 0;
+    }
+
+    /* Estilo e espaçamento para os itens visíveis do header */
+    .header-flex .logo,
+    .header-flex .contact-item, /* Será exibido seletivamente pelas regras de 'order' e 'display' */
+    .header-flex .social-icons a {
+        display: inline-flex; /* Para alinhar ícones e texto corretamente */
+        align-items: center;
+        margin-right: 8px;   /* Espaçamento entre os itens (ajuste conforme necessário) */
+    }
+    /* O último item visível antes do WhatsApp link pode precisar de ajuste se o espaçamento não for desejado */
+
+
+    /* Tamanhos de Ícones e Logo */
+    .header-flex .logo img {
+        height: 24px; /* Consistente com o mobile */
+        vertical-align: middle; /* Ajuda no alinhamento se não for flex item direto */
+    }
+    .header-flex .contact-icon,
+    .header-flex .social-icon-svg {
+        height: 22px; /* Consistente com o mobile (ou ajuste) */
+        width: 22px;  /* Consistente com o mobile (ou ajuste) */
+    }
+    .header-flex .whatsapp-link .button-icon {
+        height: 20px; /* Consistente com o mobile */
+        width: auto;
+    }
+
+    /* Ordem e visibilidade dos itens (copiado da lógica mobile) */
+    .header-flex .logo { order: 1; }
+
+    .header-flex .contact-item { display: none; } /* Esconde todos por padrão */
+    .header-flex .contact-item a .contact-text { display: none !important; } /* Esconde o texto dos contatos */
+
+    /* Exibe contatos específicos e define sua ordem */
+    .header-flex .contact-items-wrapper .contact-item:nth-child(1) { display: inline-flex !important; order: 2; } /* Primeiro Telefone */
+    .header-flex .contact-items-wrapper .contact-item:nth-child(3) { display: inline-flex !important; order: 3; } /* Email */
+
+    .header-flex .social-icons a[href*="instagram.com"] { order: 4; }
+    .header-flex .social-icons a[aria-label="Link para Negócios"] { order: 5; }
+
+    .header-flex .whatsapp-link {
+        display: inline-flex; /* Garante o comportamento flex para alinhamento interno */
+        align-items: center;
+        order: 7;                /* Último item visual */
+        margin-left: auto;       /* Empurra para a extrema direita */
+        margin-right: 0;         /* Remove margem direita para encostar no limite do container */
+        padding: 7px 12px;       /* Padding interno do botão */
+        font-size: 0.85em;       /* Tamanho da fonte do botão */
+        gap: 6px;                /* Espaço entre o ícone e o texto dentro do botão */
+        border-radius: 4px;
+        line-height: 1.2;
+    }
+
+    /* Remove estilos de tablet que conflitariam com 'display: contents' */
+    .header-left {
+        /* width, margin-bottom, text-align, justify-content já resetados acima ou por display:contents */
+    }
+    .contact-items-wrapper {
+        /* justify-content já resetado */
+    }
+    .header-right {
+        /* width, justify-content, gap já resetados */
+    }
+
+    /* --- FIM: ESTILOS DO HEADER PARA TABLET --- */
+
+    /* ... Mantenha outros estilos existentes para tablet que NÃO sejam do header ... */
+}
+
+
+
     .site-header > .container,
     .sobre-empresa-section > .container,
     .servicos-section > .container,
@@ -845,7 +952,7 @@ body {
     .site-header .container.header-flex {
         display: flex;
         align-items: center;
-        width: 100%;
+        width: 96%;
     }
     .header-left,
     .header-left .contact-info,
