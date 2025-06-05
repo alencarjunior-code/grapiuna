@@ -45,9 +45,8 @@ body {
     padding-left: 10%;
     padding-right: 10%;
     padding-top: 36px;
-    /* Adiciona padding-bottom para criar espaço para os indicadores abaixo da área da imagem */
-    padding-bottom: 20px; /* Ajuste conforme necessário */
-    position: relative; /* Garante que o posicionamento absoluto do filho seja relativo a este contêiner */
+    padding-bottom: 20px;
+    position: relative;
 }
 .carousel-container { width: 100%; position: relative; overflow: hidden; }
 .carousel-slide { width: 100%; display: none; opacity: 0; transition: opacity 0.8s ease-in-out; }
@@ -55,41 +54,36 @@ body {
 .carousel-slide img { display: block; width: 100%; height: auto; }
 .carousel-indicators {
     position: absolute;
-    bottom: 0px; /* Ajustado para ficar fora da imagem se o contêiner tiver padding-bottom */
+    bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
     z-index: 15;
-    background-color: rgba(0, 0, 0, 0.2); /* Adiciona um fundo sutil para visibilidade */
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 5px 10px;
     border-radius: 5px;
 }
 .indicator-item { width: 70px; height: 4px; background-color: rgba(255, 255, 255, 0.35); border: none; padding: 0; cursor: pointer; transition: background-color 0.3s ease; border-radius: 2px; }
 .indicator-item:hover { background-color: rgba(255, 255, 255, 0.6); }
 .indicator-item.active { background-color: rgba(255, 255, 255, 0.95); }
-/* .carousel-indicators.hidden { display: none !important; } - Esta classe é tratada pelo JS, vamos também controlar com CSS para mobile */
 
-/* Media Query para Mobile para ocultar os indicadores do banner */
 @media (max-width: 768px) {
     .banner-section > .container {
-        padding-bottom: 0; /* Remove o padding-bottom em mobile */
+        padding-bottom: 0;
     }
     .carousel-indicators {
-        display: none !important; /* Oculta os indicadores em mobile */
+        display: none !important;
     }
 }
 
-/* Add or adjust these if they affect the banner area */
 @media (max-width: 992px) { /* Tablet */
     .banner-section > .container {
         padding-left: 10px;
         padding-right: 10px;
-        padding-top: 20px; /* Padding-top ajustado para telas menores */
-        padding-bottom: 20px; /* Mantém algum padding para os indicadores no tablet, se desejado, ou defina como 0 */
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
-    /* If you want to hide indicators on tablet as well, add the rule here */
-    /* .carousel-indicators { display: none !important; } */
 }
 
 /* Estilos da Seção "Sobre a Empresa" */
@@ -148,12 +142,12 @@ body {
 .informacoes-titulo-geral { display: flex; align-items: center; font-size: 1.7em; font-weight: 700; margin-bottom: 25px; color: #E94E1B; }
 .icone-titulo-info { height: 1.2em; width: auto; margin-right: 10px; vertical-align: middle; }
 .info-tabs-nav { display: flex; margin-bottom: 0; border-bottom: 2px solid #E94E1B; }
-.info-tab-btn { flex-grow: 1; padding: 12px 15px; font-size: 0.95em; font-weight: 500; color: #333; background-color: #e0e0e0; border: 1px solid #ccc; border-bottom: none; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease; display: flex; align-items: center; justify-content: flex-start; gap: 8px; border-top-left-radius: 6px; border-top-right-radius: 6px; margin-right: 2px; }
+.info-tab-btn { flex-grow: 1; padding: 12px 15px; font-size: 0.95em; font-weight: 500; color: #333; background-color: #e0e0e0; border: 1px solid #cccccc; border-bottom: none; cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease; display: flex; align-items: center; justify-content: flex-start; gap: 8px; border-top-left-radius: 6px; border-top-right-radius: 6px; margin-right: 2px; }
 .info-tab-btn:last-child { margin-right: 0; }
 .icone-tab-btn { height: 1em; width: auto; }
 .info-tab-btn:hover { background-color: #d5d5d5; }
-.info-tab-btn.active { background-color: #E94E1B; color: white; border-color: #E94E1B; font-weight: 700; }
-.info-tabs-content-wrapper { background-color: #f7f7f7; padding: 25px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 6px 6px; }
+.info-tab-btn.active { background-color: #E94E1B; color: rgb(255, 255, 255); border-color: #E94E1B; font-weight: 700; }
+.info-tabs-content-wrapper { background-color: #ffffff; padding: 25px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 6px 6px; }
 .info-tab-content { display: none; max-height: 350px; overflow-y: auto; line-height: 1.6; color: #444; padding-right: 10px; }
 .info-tab-content.active { display: block; }
 .info-tab-content h4 { font-size: 1.2em; color: #333; margin-top: 0; margin-bottom: 15px; font-weight: 700; }
@@ -194,7 +188,8 @@ body {
 .mais-avaliacoes-link a { font-size: 0.9em; color: #777; text-decoration: none; }
 .mais-avaliacoes-link a:hover { text-decoration: underline; color: #555; }
 
-/* ===== ESTILOS PARA A SEÇÃO NOSSO ENDEREÇO ===== */
+
+/* ===== AJUSTES NA SEÇÃO NOSSO ENDEREÇO (COM MODIFICAÇÕES) ===== */
 .endereco-section {
     background-color: #F5A100;
     padding: 40px 0;
@@ -206,91 +201,82 @@ body {
     position: relative;
 }
 
-.endereco-top-right-info {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 15px;
-    max-width: 300px;
-}
-
-.info-pin-bloco {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.pin-icon-endereco {
-    width: 20px;
-    height: auto;
-    margin-top: 2px;
-
-}
-
-.texto-pin-bloco strong {
-    display: block;
-    font-size: 1.1em;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.texto-pin-bloco address {
-    font-style: normal;
-    font-size: 0.9em;
-    line-height: 1.4;
-}
-
-
 .endereco-conteudo-principal {
-    /* Wrapper para conteúdo principal */
+    /* Wrapper para conteúdo principal, pode permanecer se usado para outros fins de container */
 }
 
-.endereco-section h2 {
-    font-size: 2.2em;
-    font-weight: 700;
-    margin-bottom: 10px;
-    padding-top: 10px;
-}
-
-.subtitulo-endereco {
-    font-size: 1.05em;
+/* NOVOS ESTILOS PARA O LAYOUT DE DUAS COLUNAS */
+.endereco-info-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
     margin-bottom: 30px;
-    line-height: 1.6;
-    max-width: 80%;
+}
+
+.endereco-coluna-esquerda {
+    flex: 1.2;
+}
+
+.endereco-coluna-direita {
+    flex: 0.8;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* ESTILOS EXISTENTES SENDO AJUSTADOS OU MANTIDOS */
+.endereco-nome-local-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.endereco-nome-local-wrapper img.contato-icon-endereco {
+    height: 1.4em;
+    width: auto;
+}
+
+.endereco-nome-local-wrapper h3 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: white;
+}
+
+.endereco-logradouro {
+    font-style: normal;
+    line-height: 1.5;
+    color: white;
+    display: block;
+    margin-bottom: 0; /* MODIFICADO */
+    font-size: 0.9em;
 }
 
 .endereco-contatos-barra {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 35px;
-    padding-left: 5px;
-    font-size: 0.8em;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px; /* MODIFICADO */
+    margin-bottom: 0; /* MODIFICADO */
+    padding-left: 0;
 }
 
 .contato-item-endereco {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.95em;
+    gap: 8px;
+    font-size: 0.8em;
     color: white;
 }
 
-.contato-icon-endereco {
-    height: 1.4em;
+.endereco-contatos-barra .contato-icon-endereco {
+    height: 1.2em;
     width: auto;
-
 }
 
 .mapa-wrapper {
-    margin-top: 20px;
+    margin-top: 0; /* MODIFICADO */
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -299,6 +285,8 @@ body {
 .mapa-wrapper iframe {
     display: block;
 }
+/* ===== FIM DOS AJUSTES NA SEÇÃO NOSSO ENDEREÇO ===== */
+
 
 /* ===== ESTILOS PARA A SEÇÃO GALERIA CONFIANÇA ===== */
 .galeria-confianca-section {
@@ -474,7 +462,7 @@ body {
 }
 
 .clientes-parceiros-carousel.infinite-loop {
-    animation: scroll-logos-infinite 40s linear infinite; /* Ajuste a duração para velocidade */
+    animation: scroll-logos-infinite 40s linear infinite;
 }
 
 .cliente-parceiro-item {
@@ -505,20 +493,20 @@ body {
         transform: translateX(0%);
     }
     100% {
-        transform: translateX(-50%); /* Move pela largura do conjunto original de logos */
+        transform: translateX(-50%);
     }
 }
 /* ===== FIM DOS ESTILOS PARA A SEÇÃO CLIENTES E PARCEIROS ===== */
 
-/* ===== ESTILOS PARA O RODAPÉ (FOOTER) ===== */
+/* ===== ESTILOS PARA O RODAPÉ (FOOTER) (Com Modificações) ===== */
 .site-footer-main {
-    background-color: hsl(0, 0%, 29%); /* Cinza escuro do rodapé */
-    color: #f0f0f0; /* Cor de texto clara padrão para o rodapé */
+    background-color: hsl(0, 0%, 29%);
+    color: #f0f0f0;
     padding: 40px 0 20px 0;
     font-size: 0.9em;
 }
 
-.site-footer-main a { /* Estilo padrão para links no rodapé, se houver */
+.site-footer-main a {
     color: #f0f0f0;
     text-decoration: none;
 }
@@ -529,112 +517,97 @@ body {
 
 .footer-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* ALTERADO: Centraliza a coluna da esquerda */
     align-items: flex-start;
-    flex-wrap: wrap; /* Para quebrar em telas menores */
-    gap: 220px; /* Espaço entre as colunas quando quebram */
+    flex-wrap: wrap;
+    /* gap: 220px; */ /* REMOVIDO/COMENTADO */
     margin-bottom: 25px;
 }
 
 .footer-left-col {
-    flex: 1; /* Permite que cresça */
-    min-width: 280px; /* Largura mínima antes de quebrar */
+    /* flex: 1; */ /* Opcional */
+    /* min-width: 280px; */ /* Opcional */
     display: flex;
     flex-direction: column;
     align-items: center;
-
-
-
 }
 
 .footer-logo-main img {
-    max-width: 200px; /* Ajuste conforme o tamanho do seu logo completo */
+    max-width: 200px;
     height: auto;
     margin-bottom: 20px;
 }
 
-.footer-certification-img img {
-    max-width: 150px; /* Ajuste conforme o tamanho do seu selo */
-    height: auto;
-    margin-bottom: 20px;
-}
+/* .footer-certification-img img { ... } */ /* REGRA REMOVIDA - o elemento HTML foi removido */
 
 .footer-partner-logos {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaço entre os logos de parceiros */
+    justify-content: center; /* NOVO: Centraliza os logos */
+    gap: 15px; /* ALTERADO */
     flex-wrap: wrap;
+    margin-top: 20px; /* Adicionado para espaço após o logo principal, se necessário */
 }
 
 .footer-partner-logo-item {
-    height: 30px; /* Altura dos logos de parceiros */
+    height: 35px; /* ALTERADO */
     width: auto;
-    filter: brightness(0) invert(1) opacity(0.8); /* Para tornar logos coloridos/escuros em brancos/claros */
+    filter: brightness(0) invert(1) opacity(0.8);
 }
 
-
-
-/* Nova regra para a imagem que deve manter a cor original */
 .footer-partner-logo-item.keep-color {
-    filter: none;  /* Remove qualquer filtro aplicado, exibindo a imagem original */
-    opacity: 1;    /* Garante opacidade total para a imagem colorida */
+    filter: none;
+    opacity: 1;
 }
 
-
-.footer-right-col {
-    flex: 1.5; /* Permite que a coluna de contato seja um pouco maior */
-    min-width: 280px; /* Largura mínima */
+/* NOVO: Estilo específico para a imagem do selo de Registro INMETRO */
+.footer-partner-logo-item.inmetro-registro {
+    height: 50px;
+    width: auto;
+    filter: none;
+    background-color: white;
+    padding: 3px;
+    border-radius: 3px;
 }
 
-.footer-contact-item {
-    display: flex;
-    align-items: flex-start; /* Alinha ícone com início do texto (bom para múltiplas linhas) */
-    margin-bottom: 6px;
-    line-height: 1.5;
-}
-
-.footer-contact-item img {
-    width: 16px; /* Tamanho dos ícones de contato */
-    height: 16px;
-    margin-right: 12px;
-    margin-top: 4px; /* Ajuste para alinhar verticalmente com o texto */
-}
+/* As regras para .footer-right-col, .footer-contact-item e .footer-contact-item img
+   foram removidas pois os elementos HTML correspondentes foram removidos. */
 
 .footer-divider {
     border: none;
     height: 1px;
-    background-color: hsl(0, 0%, 40%); /* Cor da linha divisória */
+    background-color: hsl(0, 0%, 40%);
     margin: 20px 0;
 }
 
 .footer-bottom {
-    display: flex;
+    display: flex-start;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Permite quebrar em telas menores */
-    gap: 15px; /* Espaço entre copyright e tagline quando quebram */
+    flex-wrap: wrap;
+    gap: 15px;
     font-size: 0.85em;
     padding-top: 15px;
 }
 
 .footer-copyright {
     margin: 0;
-    text-align: left; /* Padrão, mas pode ser center em mobile */
+    text-align: center;
 }
 
 .footer-tagline {
-    margin: 0;
-    text-align: right; /* Padrão, mas pode ser center em mobile */
+    margin: 30;
+    text-align: center;
 }
 
 .footer-tagline .brav {
     font-weight: bold;
-    color: #FFB300; /* Amarelo-Laranja para "BRAV" */
+    color: #FFB300;
 }
 
 .footer-tagline .lightning-bolt {
-    color: #FFB300; /* Amarelo-Laranja para o raio */
-    font-size: 1.1em; /* Para destacar um pouco o raio */
+    color: #FFB300;
+    font-size: 1.1em;
 }
 /* ===== FIM DOS ESTILOS PARA O RODAPÉ (FOOTER) ===== */
 
@@ -660,7 +633,7 @@ body {
     .whatsapp-web-cta-section > .container,
     .galeria-confianca-section > .container,
     .clientes-parceiros-section > .container,
-    .site-footer-main > .container { /* Adicionado para o rodapé */
+    .site-footer-main > .container {
         width: 55vw;
         max-width: 980px;
         padding-left: 0;
@@ -677,13 +650,15 @@ body {
     .whatsapp-web-cta-section > .container,
     .galeria-confianca-section > .container,
     .clientes-parceiros-section > .container,
-    .site-footer-main > .container { /* Mantém padding do container global */
+    .site-footer-main > .container {
         padding-left: 15px;
         padding-right: 15px;
     }
     .endereco-section .endereco-container {
         width: 55vw;
         max-width: 980px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }
 
@@ -702,7 +677,7 @@ body {
     .endereco-section .endereco-container,
     .galeria-confianca-section .container,
     .clientes-parceiros-section .container,
-    .site-footer-main .container { /* Aplicar padding ao container do rodapé */
+    .site-footer-main .container {
          padding-left: 10px;
          padding-right: 10px;
     }
@@ -716,7 +691,7 @@ body {
     .sobre-empresa-section, .servicos-section, .produtos-section, .informacoes-tecnicas-section, .avaliacoes-section, .whatsapp-web-cta-section, .galeria-confianca-section, .clientes-parceiros-section {
         padding-top: 25px; padding-bottom: 30px; margin-top: 20px; margin-bottom: 25px;
     }
-    .site-footer-main { padding-top: 30px; padding-bottom: 15px;} /* Padding do rodapé no tablet */
+    .site-footer-main { padding-top: 30px; padding-bottom: 15px;}
 
 
     .produtos-carousel-wrapper, .avaliacoes-carousel-wrapper { padding-left: 30px; padding-right: 30px; }
@@ -737,33 +712,34 @@ body {
     .avaliacao-carousel-btn.next { right: 5px; }
 
     /* Ajustes para Responsividade da Seção Endereço - TABLET */
-    .endereco-top-right-info {
-        max-width: 250px;
-        padding: 10px;
+    /* Se precisar que as colunas empilhem no tablet e alinhem à esquerda: */
+    .endereco-info-superior {
+        /* flex-direction: column; */    /* Descomente se quiser empilhar no tablet */
+        /* align-items: flex-start; */   /* Descomente se quiser alinhar à esquerda no tablet */
+        /* gap: 25px; */
     }
-    .btn-whatsapp-endereco {
-        font-size: 0.9em;
-        padding: 8px 15px;
-    }
-    .texto-pin-bloco strong {
-        font-size: 1em;
-    }
-    .texto-pin-bloco address {
-        font-size: 0.85em;
-    }
-
+    /* .endereco-coluna-esquerda, .endereco-coluna-direita { */ /* Descomente se quiser empilhar no tablet */
+        /* flex-basis: 100%; */
+        /* width: 100%; */
+    /* } */
+    /* .endereco-coluna-esquerda { */
+        /* text-align: left; */
+    /* } */
+    /* .endereco-coluna-esquerda .endereco-nome-local-wrapper { */
+        /* margin-left: 0;  */
+        /* margin-right: 0; */
+    /* } */
+    /* .endereco-coluna-direita .endereco-contatos-barra { */
+        /* align-items: flex-start; */
+        /* margin-left: 0; */
+        /* margin-right: 0; */
+    /* } */
     .endereco-section h2 {
         font-size: 2em;
     }
-    .subtitulo-endereco {
-        font-size: 1em;
-        max-width: 70%;
-    }
     .endereco-contatos-barra {
-        gap: 20px;
-        justify-content: center;
+        /* Ajustes específicos para tablet se necessário */
     }
-    /* FIM DOS AJUSTES DE ENDEREÇO PARA TABLET */
 
     /* Ajustes Galeria Confiança - Tablet */
     .galeria-confianca-carousel-wrapper {
@@ -777,69 +753,51 @@ body {
      .galeria-confianca-carousel-btn.prev { left: -5px; }
      .galeria-confianca-carousel-btn.next { right: -5px; }
 
-    /* Ajustes Rodapé - Tablet */
+    /* Ajustes Rodapé - Tablet (com a coluna da direita removida) */
     .footer-top {
-        flex-direction: column; /* Empilha as colunas do rodapé */
-        align-items: center; /* Centraliza as colunas empilhadas */
-        text-align: center; /* Centraliza texto dentro das colunas */
-    }
-    .footer-left-col, .footer-right-col {
-        width: 100%;
-        max-width: 400px; /* Limita a largura das colunas empilhadas */
-        align-items: center; /* Centraliza conteúdo dentro da coluna esquerda */
+        flex-direction: column;
+        align-items: center;
         text-align: center;
+        gap: 30px;
+    }
+    .footer-left-col { /* Já é flex-direction: column; align-items: center; globalmente */
+        width: 100%;
+        max-width: 400px;
     }
     .footer-partner-logos {
-        justify-content: center; /* Centraliza os logos de parceiros */
-    }
-    .footer-contact-item {
-        justify-content: center; /* Centraliza itens de contato */
-        text-align: left; /* Mantém texto do contato alinhado à esquerda relativo ao ícone */
-        max-width: 300px; /* Para não esticar demais o texto do endereço */
-        margin-left: auto;
-        margin-right: auto;
-    }
-     .footer-contact-item img {
-        margin-right: 8px; /* Ajuste se necessário */
+        justify-content: center;
     }
     .footer-bottom {
-        flex-direction: column; /* Empilha copyright e tagline */
+        flex-direction: column;
         text-align: center;
     }
     .footer-tagline {
-        text-align: center; /* Garante centralização da tagline */
+        text-align: center;
         margin-top: 10px;
     }
-
 }
 
 @media (max-width: 768px) { /* Mobile */
     .container {
-        /* padding-left: 10px; (já definido no tablet, herdado se tablet > mobile) */
-        /* padding-right: 10px; (já definido no tablet, herdado se tablet > mobile) */
-        /* Se não houver @media para tablet ou se precisar garantir para mobile: */
         padding-left: 30px;
         padding-right: 30px;
     }
 
     body {
-        padding-top: 20px; /* Para o header fixo. Ajuste se a altura exata do header mobile for diferente. */
+        padding-top: 20px;
     }
 
-    /* ===== INÍCIO DOS NOVOS ESTILOS DO CABEÇALHO MOBILE ===== */
+    /* ===== CABEÇALHO MOBILE ===== */
     .site-header {
         padding: 5px 0;
-        top: 0; /* Garante que cole no topo */
-        margin-top: 0; /* Remove qualquer margem que possa empurrá-lo */
-        /* position: fixed, left:0, width:100%, z-index:1000 já são globais e herdados */
+        top: 0;
+        margin-top: 0;
     }
-
     .site-header .container.header-flex {
         display: flex;
         align-items: center;
         width: 100%;
     }
-
     .header-left,
     .header-left .contact-info,
     .header-left .contact-info .contact-items-wrapper,
@@ -847,7 +805,6 @@ body {
     .header-right .social-icons {
         display: contents;
     }
-
     .header-flex .logo,
     .header-flex .contact-item,
     .header-flex .social-icons a,
@@ -856,117 +813,40 @@ body {
         align-items: center;
         margin-right: 6px;
     }
-
-    .header-flex .logo img {
-        height: 24px;
-        vertical-align: middle;
-    }
-
-    .header-flex .contact-icon,
-    .header-flex .social-icon-svg {
-        height: 24px;
-        width: 24px;
-    }
-
+    .header-flex .logo img { height: 24px; vertical-align: middle; }
+    .header-flex .contact-icon, .header-flex .social-icon-svg { height: 24px; width: 24px; }
     .header-flex .logo { order: 1; }
-
     .header-flex .contact-item { display: none; }
     .header-flex .contact-item a .contact-text { display: none !important; }
-
-    .header-flex .contact-items-wrapper .contact-item:nth-child(1) {
-        display: inline-flex !important;
-        order: 2;
-    }
-    .header-flex .contact-items-wrapper .contact-item:nth-child(3) {
-        display: inline-flex !important;
-        order: 3;
-    }
-
+    .header-flex .contact-items-wrapper .contact-item:nth-child(1) { display: inline-flex !important; order: 2; }
+    .header-flex .contact-items-wrapper .contact-item:nth-child(3) { display: inline-flex !important; order: 3; }
     .header-flex .social-icons a[href*="instagram.com"] { order: 4; }
     .header-flex .social-icons a[aria-label="Link para Negócios"] { order: 5; }
     .header-flex .social-icons a[aria-label="Link para Localização"] { order: 6; }
-
-    .header-flex .whatsapp-link {
-        order: 7;
-        margin-left: auto;
-        margin-right: 0;
-        font-size: 0.85em;
-        padding: 7px 12px;
-        gap: 6px;
-        border-radius: 4px;
-        line-height: 1.2;
-    }
-
-    .header-flex .whatsapp-link .button-icon {
-        height: 20px;
-        width: auto;
-    }
-
-    .header-left {
-        flex-grow: unset;
-        gap: unset;
-        margin-bottom: unset;
-    }
+    .header-flex .whatsapp-link { order: 7; margin-left: auto; margin-right: 0; font-size: 0.85em; padding: 7px 12px; gap: 6px; border-radius: 4px; line-height: 1.2; }
+    .header-flex .whatsapp-link .button-icon { height: 20px; width: auto; }
+    .header-left { flex-grow: unset; gap: unset; margin-bottom: unset; }
     .contact-info { display: contents; }
     .contact-items-wrapper { display: contents; }
-
-    .header-right {
-        flex-grow: unset;
-        flex-shrink: unset;
-        gap: unset;
-        margin-left: unset;
-    }
+    .header-right { flex-grow: unset; flex-shrink: unset; gap: unset; margin-left: unset; }
     .social-icons { display: contents; }
-    /* ===== FIM DOS NOVOS ESTILOS DO CABEÇALHO MOBILE ===== */
 
+    /* BANNER MOBILE */
+    .banner-section > .container { width: 100%; max-width: none; padding-left: 0; padding-right: 0; padding-top: 20px; }
+    .banner-section .carousel-container { width: 100%; position: relative; overflow: hidden; }
+    .banner-section .carousel-slide { width: 100%; overflow: hidden; }
+    .banner-section .carousel-slide img { display: block; width: 150%; height: auto; position: relative; left: 50%; transform: translateX(-50%); }
+    .banner-section .carousel-indicators { bottom: 10px; }
+    .banner-section .indicator-item { width: 20px; height: 3px; }
 
-    .banner-section > .container {
-        width: 100%;
-        max-width: none;
-        padding-left: 0;
-        padding-right: 0;
-        padding-top: 20px;
-    }
-
-    .banner-section .carousel-container {
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .banner-section .carousel-slide {
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .banner-section .carousel-slide img {
-        display: block;
-        width: 150%;
-        height: auto;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .banner-section .carousel-indicators {
-        bottom: 10px;
-    }
-    .banner-section .indicator-item {
-        width: 20px;
-        height: 3px;
-    }
-    /* FIM DOS AJUSTES DO BANNER MOBILE */
-
-
-    /* Estilos gerais para seções no mobile */
+    /* SEÇÕES GERAIS MOBILE */
     .sobre-empresa-section, .servicos-section, .produtos-section,
     .informacoes-tecnicas-section, .avaliacoes-section,
     .whatsapp-web-cta-section, .galeria-confianca-section,
     .clientes-parceiros-section, .endereco-section, .site-footer-main {
-        padding-top: 25px; /* Ajustado para consistência, original era 20px para alguns */
+        padding-top: 25px;
         padding-bottom: 25px;
     }
-    /* Padding do container interno para seções específicas no mobile */
     .sobre-empresa-section > .container,
     .servicos-section > .container,
     .produtos-section > .container,
@@ -980,36 +860,28 @@ body {
         padding-left: 10px;
         padding-right: 10px;
     }
-    .clientes-parceiros-section .container { /* Especificidade para o carrossel de clientes não ter padding lateral no container direto */
-        padding-left: 0;
-        padding-right: 0;
-    }
+    .clientes-parceiros-section .container { padding-left: 0; padding-right: 0; }
 
-
-    /* Títulos de Seção Mobile */
+    /* TÍTULOS DE SEÇÃO MOBILE */
     .sobre-nome-empresa { font-size: 1.3em; }
     .servicos-titulo-geral, .produtos-titulo-geral,
     .informacoes-titulo-geral, .avaliacoes-titulo-geral,
     .galeria-confianca-titulo, .whatsapp-web-cta-title,
-    .clientes-parceiros-titulo, .endereco-section h2 {
-        font-size: 1.5em; /* Tamanho padrão para títulos de seção no mobile */
-    }
-    .whatsapp-web-cta-title { font-size: 1.4em; } /* Ajuste específico se necessário */
+    .clientes-parceiros-titulo { font-size: 1.5em; }
+    .whatsapp-web-cta-title { font-size: 1.4em; }
     .clientes-parceiros-titulo { font-size: 1.4em; margin-bottom: 20px;}
     .galeria-confianca-titulo { margin-bottom: 20px; }
-    .endereco-section h2 { font-size: 1.8em; text-align: center; padding-top: 0; }
 
-
-    /* Sobre Empresa Mobile */
+    /* SOBRE EMPRESA MOBILE */
     .titulo-empresa-wrapper { flex-direction: column; align-items: center; text-align: center; }
     .logo-parceiro { height: 40px; }
     .sobre-coluna-imagem { max-width: 250px; }
     .sobre-imagem-ilustrativa { max-width: 100%; }
 
-    /* Serviços Mobile */
+    /* SERVIÇOS MOBILE */
     .servicos-grid-static { grid-template-columns: 1fr; }
 
-    /* Produtos Mobile */
+    /* PRODUTOS MOBILE */
     .produtos-carousel-wrapper { padding-left: 0; padding-right: 0;}
     .produtos-carousel-viewport { padding-left: 0; padding-right: 0; }
     .produto-item { flex-basis: 100%; margin-bottom: 20px; padding: 0 5px;}
@@ -1017,19 +889,18 @@ body {
     .produto-carousel-btn.prev {left: -20px;}
     .produto-carousel-btn.next {right: -20px;}
 
-
-    /* Informações Técnicas Mobile */
+    /* INFORMAÇÕES TÉCNICAS MOBILE */
     .informacoes-titulo-geral { flex-direction: column; align-items: flex-start; gap: 5px; }
     .info-tabs-nav { flex-direction: column; }
     .info-tab-btn { margin-right: 0; margin-bottom: 2px; border-radius: 6px; border-bottom: 1px solid #ccc; }
 
-    /* Avaliações Mobile */
+    /* AVALIAÇÕES MOBILE */
     .avaliacoes-destaque-wrapper { flex-direction: column; align-items: center; gap: 20px; }
     .avaliacao-destaque-card { max-width: 90%; width: 100%; padding: 15px; }
     .avaliador-destaque-foto { width: 50px; height: 50px; margin-bottom: 10px; }
     .avaliacao-destaque-texto { font-size: 0.8em; }
     .avaliador-destaque-nome { font-size: 0.85em; }
-    .avaliacoes-carousel-wrapper { padding: 0 10px; } /* Ajuste para setas ficarem melhor */
+    .avaliacoes-carousel-wrapper { padding: 0 10px; }
     .avaliacoes-carousel-viewport { padding-left: 0; padding-right: 0; }
     .avaliacao-card { flex-basis: 100%; margin: 0 0 15px 0; }
     .avaliacao-texto { -webkit-line-clamp: initial; max-height: none; overflow-y: visible; }
@@ -1037,143 +908,79 @@ body {
     .avaliacao-carousel-btn.prev {left: -20px;}
     .avaliacao-carousel-btn.next {right: -20px;}
 
-    /* Endereço Mobile */
-    .endereco-top-right-info {
-        position: static;
-        text-align: left;
-        align-items: flex-start;
-        margin: 0 auto 25px auto;
-        background-color: rgba(0,0,0,0.05);
-        border-radius: 8px;
-        max-width: 100%;
-        padding: 10px;
-    }
-    .info-pin-bloco {
-        text-align: left;
-    }
-    .subtitulo-endereco {
-        font-size: 0.95em;
-        text-align: center;
-        max-width: 100%;
-        margin-bottom: 25px;
-    }
-    .endereco-contatos-barra {
+    /* Endereço Mobile - Com alinhamento à esquerda */
+    .endereco-info-superior {
         flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        text-align: center;
-        margin-bottom: 30px;
+        align-items: flex-start; /* ALTERADO: Alinha os blocos à esquerda */
+        gap: 25px;
     }
-    .contato-item-endereco {
-        font-size: 0.9em;
+    .endereco-coluna-esquerda {
+        width: 100%;
+        text-align: left; /* ALTERADO: Alinha texto (address) à esquerda */
     }
-    .mapa-wrapper {
-      height: 350px;
+    .endereco-coluna-esquerda .endereco-nome-local-wrapper {
+        margin-left: 0; /* ALTERADO: Remove centralização do bloco */
+        margin-right: 0; /* ALTERADO: Remove centralização do bloco */
+        justify-content: flex-start; /* Garante que o conteúdo interno (ícone e h3) comece da esquerda */
     }
-    .mapa-wrapper iframe {
-      height: 100%;
+    .endereco-coluna-direita {
+        width: 100%;
     }
+    .endereco-coluna-direita .endereco-contatos-barra {
+        align-items: flex-start; /* GARANTIDO: Alinha itens de contato à esquerda */
+        margin-left: 0; /* ALTERADO: Remove centralização da barra */
+        margin-right: 0; /* ALTERADO: Remove centralização da barra */
+    }
+    .contato-item-endereco { font-size: 1em; }
+    .mapa-wrapper { height: 350px; }
+    .mapa-wrapper iframe { height: 100%; }
 
-    /* WhatsApp CTA Mobile */
-    .whatsapp-web-cta-section {
-        padding: 35px 0px;
-    }
-    .whatsapp-web-cta-icon {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 12px;
-    }
-    .whatsapp-web-cta-subtitle {
-        font-size: 0.9em;
-        margin-bottom: 25px;
-        padding: 0 10px;
-    }
-    .btn-whatsapp-web-cta {
-        font-size: 0.95em;
-        padding: 12px 24px;
-    }
+    /* WHATSAPP CTA MOBILE */
+    .whatsapp-web-cta-section { padding: 35px 0px; }
+    .whatsapp-web-cta-icon { width: 40px; height: 40px; margin-bottom: 12px; }
+    .whatsapp-web-cta-subtitle { font-size: 0.9em; margin-bottom: 25px; padding: 0 10px; }
+    .btn-whatsapp-web-cta { font-size: 0.95em; padding: 12px 24px; }
 
-    /* Galeria Confiança Mobile */
-    .galeria-confianca-carousel-wrapper {
-        padding: 0 5px;
-    }
-    .galeria-confianca-item img {
-        max-width: 95%;
-        max-height: 300px;
-    }
-    .galeria-confianca-carousel-btn {
-        font-size: 1.8em;
-        width: 35px;
-        height: 35px;
-        padding: 3px 8px;
-    }
-    .galeria-confianca-carousel-btn.prev {
-        left: -25px;
-    }
-    .galeria-confianca-carousel-btn.next {
-        right: -25px;
-    }
+    /* GALERIA CONFIANÇA MOBILE */
+    .galeria-confianca-carousel-wrapper { padding: 0 5px; }
+    .galeria-confianca-item img { max-width: 95%; max-height: 300px; }
+    .galeria-confianca-carousel-btn { font-size: 1.8em; width: 35px; height: 35px; padding: 3px 8px; }
+    .galeria-confianca-carousel-btn.prev { left: -25px; }
+    .galeria-confianca-carousel-btn.next { right: -25px; }
 
-    /* Clientes e Parceiros Mobile */
-    .clientes-parceiros-section {
-        padding: 30px 0;
-    }
-    .cliente-parceiro-item {
-        padding: 0 10px;
-        height: 60px;
-    }
-    .cliente-parceiro-item img {
-        max-width: 100px;
-    }
-    .clientes-parceiros-carousel.infinite-loop {
-        animation-duration: 35s; /* Mais rápido no mobile se houver menos itens visíveis ou para dar a sensação de mais logos */
-    }
+    /* CLIENTES E PARCEIROS MOBILE */
+    .clientes-parceiros-section { padding: 30px 0; }
+    .cliente-parceiro-item { padding: 0 10px; height: 60px; }
+    .cliente-parceiro-item img { max-width: 100px; }
+    .clientes-parceiros-carousel.infinite-loop { animation-duration: 35s; }
 
-    /* Rodapé (Footer) Mobile */
-    .site-footer-main {
-        padding-bottom: 20px;
-    }
+    /* RODAPÉ (FOOTER) MOBILE (com a coluna da direita removida) */
+    .site-footer-main { padding-bottom: 20px; }
     .footer-top {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 20px; /* Espaço entre blocos empilhados */
+        gap: 20px;
     }
-    .footer-left-col, .footer-right-col {
+    .footer-left-col { /* Já é flex-direction: column; align-items: center; globalmente */
         text-align: center;
         min-width: unset;
-        width: 100%; /* Ocupar toda a largura disponível no container */
+        width: 100%;
     }
-    .footer-logo-main { /* Para centralizar o logo principal no mobile */
-        display: flex; /* Se for uma img e um span */
-        flex-direction: column; /* Ou ajuste conforme seu HTML do logo */
+    .footer-logo-main {
+        display: flex;
+        flex-direction: column;
         align-items: center;
         margin-left: auto;
         margin-right: auto;
     }
-     .footer-logo-main img { /* Se o logo do rodapé for uma única imagem */
+     .footer-logo-main img {
         margin-left: auto;
         margin-right: auto;
         display: block;
     }
-    .footer-certification-img {
-        margin-left: auto;
-        margin-right: auto;
-        display: block; /* Para centralizar se for imagem */
-    }
-    .footer-partner-logos {
-        justify-content: center;
+    .footer-partner-logos { /* Já tem justify-content: center da regra global do rodapé */
         gap: 15px;
-    }
-    .footer-contact-item {
-        justify-content: center; /* Centraliza o ícone + texto */
-        text-align: left; /* Mantém o texto alinhado à esquerda em relação ao ícone */
-        max-width: 280px; /* Para o texto do endereço não ficar muito largo */
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .footer-contact-item img {
-        margin-top: 2px; /* Ajuste fino vertical para o ícone */
     }
     .footer-bottom {
         flex-direction: column;
@@ -1183,61 +990,3 @@ body {
          margin-top: 10px;
     }
 }
-
-/* ===== AJUSTES NA SEÇÃO NOSSO ENDEREÇO ===== */
-
-.endereco-nome-local-wrapper {
-    display: flex; /* Coloca o ícone e o nome na mesma linha */
-    align-items: center; /* Alinha verticalmente o ícone e o nome */
-    gap: 10px; /* Espaço entre o ícone e o nome */
-    margin-bottom: 10px; /* Espaço entre o nome/ícone e o endereço abaixo */
-}
-
-.endereco-nome-local-wrapper img.contato-icon-endereco {
-    height: 1.6em; /* Tamanho do ícone de localização ao lado do nome. Ajuste se necessário. */
-    width: auto;
-}
-
-.endereco-nome-local-wrapper h3 {
-    margin: 0; /* Remove margens padrão do h3 */
-    font-size: 1.5em; /* Tamanho da fonte para "Extintores Grapiúna". Ajuste conforme desejar. */
-    font-weight: 700;
-    color: white; /* Cor do texto, conforme o padrão da seção */
-}
-
-.endereco-logradouro {
-    font-style: normal; /* Remove o itálico padrão da tag <address> */
-    line-height: 1.5;
-    color: white; /* Cor do texto do endereço */
-    display: block; /* Garante que as margens funcionem corretamente */
-    margin-bottom: 55px; /* Cria o efeito de "dois espaços" antes da barra de contatos */
-    font-size: 1.1em;
-}
-
-/* Ajustes na barra de contatos para desktop/telas maiores */
-.endereco-contatos-barra {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Distribui os itens de contato igualmente na largura */
-    flex-wrap: nowrap; /* Garante que os itens fiquem em uma única linha (em telas maiores) */
-    /* gap: 15px;  Pode ajustar o gap se necessário, ou remover se space-between for suficiente */
-    margin-bottom: 30px; /* Espaço antes do mapa */
-    padding-left: 0; /* Remove o padding-left anterior para melhor alinhamento com o mapa */
-}
-
-.contato-item-endereco {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Espaço entre o ícone e o texto em cada item de contato */
-    font-size: 1.1em; /* Ajuste o tamanho da fonte se os contatos estiverem muito largos para uma linha */
-    color: white;
-}
-
-/* Ajustes para o ícone de contato especificamente na barra de contatos, se necessário */
-.endereco-contatos-barra .contato-icon-endereco {
-    height: 1.2em; /* Padroniza a altura dos ícones na barra de contatos */
-}
-
-/* Seus estilos mobile existentes para .endereco-contatos-barra 
-   (com flex-direction: column) irão sobrescrever o flex-wrap: nowrap 
-   em telas menores, o que é o comportamento correto. */
