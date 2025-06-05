@@ -1118,6 +1118,7 @@ body {
         align-items: center;
         text-align: center;
         gap: 20px;
+        margin-top: 30px;
     }
     .footer-left-col { /* Já é flex-direction: column; align-items: center; globalmente */
         text-align: center;
